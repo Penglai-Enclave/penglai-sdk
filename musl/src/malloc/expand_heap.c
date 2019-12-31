@@ -11,7 +11,6 @@
  * (interpreted as the main-thread stack) or below &b
  * (the current stack). It is used to defend against
  * buggy brk implementations that can cross the stack. */
-
 static int traverses_stack_p(uintptr_t old, uintptr_t new)
 {
 	const uintptr_t len = 8<<20;
@@ -46,28 +45,25 @@ void *__expand_heap(size_t *pn)
 		errno = ENOMEM;
 		return 0;
 	}
-	n += -n & PAGE_SIZE-1;
 
+	n += ((-n) & (PAGE_SIZE-1));
 	if (!brk) {
 		brk = __syscall(SYS_brk, 0);
-		//brk += -brk & PAGE_SIZE-1;
+		brk += ((-brk) & (PAGE_SIZE-1));
 	}
-	__syscall(SYS_brk, brk+n);
-	*pn = n;
-	brk += n;
-	return (void *)(brk-n);	
 	// if (n < SIZE_MAX-brk && __syscall(SYS_brk, brk+n)==brk+n) {
-	// 	*pn = n;
-	// 	brk += n;
-	// 	return (void *)(brk-n);
-	// }
+	if ( __syscall(SYS_brk, brk+n)==brk+n) {
+		*pn = n;
+		brk += n;
+		return (void *)(brk-n);
+	}
 
-	// size_t min = (size_t)PAGE_SIZE << mmap_step/2;
-	// if (n < min) n = min;
-	// void *area = __mmap(0, n, PROT_READ|PROT_WRITE,
-	// 	MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
-	// if (area == MAP_FAILED) return 0;
-	// *pn = n;
-	// mmap_step++;
-	// return area;
+	size_t min = (size_t)PAGE_SIZE << mmap_step/2;
+	if (n < min) n = min;
+	void *area = __mmap(0, n, PROT_READ|PROT_WRITE,
+		MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+	if (area == MAP_FAILED) return 0;
+	*pn = n;
+	mmap_step++;
+	return area;
 }

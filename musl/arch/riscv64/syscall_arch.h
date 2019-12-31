@@ -36,14 +36,17 @@ static inline long __syscall1(long n, long a)
     case SYS_brk:
       if(a0 == 0)
       {
+          // __asm_syscall("r"(a7), "0"(a0))
         return (unsigned long)((&__mmap_start0) + brk_offset); 
       }
       else
       {
+        unsigned long retval = a0;
         brk_offset = a0 - (unsigned long)&__mmap_start0;
         if(brk_offset >= 2 * DEFAULT_MMAP_SIZE)
           return -1;
-        return a0;
+        // __asm_syscall("r"(a7), "0"(a0))
+        return retval;
       }
   }
   __asm_syscall("r"(a7), "0"(a0))
@@ -83,6 +86,14 @@ static inline long __syscall4(long n, long a, long b, long c, long d)
 	register long a1 __asm__("a1") = b;
 	register long a2 __asm__("a2") = c;
 	register long a3 __asm__("a3") = d;
+  switch(n)
+ 	{
+    case SYS_write:
+      {
+	    // __asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2), "r"(a3))
+        return 0;
+      }
+  }
 	__asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2), "r"(a3))
 }
 
@@ -138,6 +149,7 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
               tmp->size = 0;
             else
               tmp->size = tmp_size - a1 - sizeof(struct mmap_metadata); 
+            // __asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2), "r"(a3), "r"(a4), "r"(a5))
             return ret;
           }
           else if(((tmp->type == 1) && (tmp->size < a1 + sizeof(struct mmap_metadata)) ) && 

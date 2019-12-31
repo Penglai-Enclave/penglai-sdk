@@ -16,13 +16,13 @@ int mem(unsigned long * args)
   {
     ptr2[i] = 1;
   }
+
   free(ptr2);
   ptr2 = (char*)malloc(0x100);
   free(ptr);
   free(ptr2);
 
-
-  EAPP_RETURN(ptr2);
+  EAPP_RETURN(ptr);
 }
 
 int EAPP_ENTRY main(){
