@@ -1,0 +1,4 @@
+prime
+*.dump
+*.o
+*.S

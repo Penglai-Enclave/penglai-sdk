@@ -1,0 +1,3 @@
+libpenglai-enclave-eapp.a
+libpenglai-enclave-host.a
+*.o

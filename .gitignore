@@ -1,0 +1,4 @@
+tags
+*.o
+*.dump
+source.sh
