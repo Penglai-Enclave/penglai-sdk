@@ -9,6 +9,10 @@ extern char __mmap_start0;
 	: "=r"(a0) : __VA_ARGS__ : "memory"); \
 	return a0; \
 
+// #define __asm_syscall(...) \
+// 	__asm__ __volatile__ ("ecall\n\t" \
+// 	: "=r"(a0) : __VA_ARGS__ : "memory"); 
+
 struct mmap_metadata
 {
   char type;
@@ -31,13 +35,15 @@ static inline long __syscall1(long n, long a)
  	{
     case SYS_brk:
       if(a0 == 0)
-        return (unsigned long)&__mmap_start0 + brk_offset; 
+      {
+        return (unsigned long)((&__mmap_start0) + brk_offset); 
+      }
       else
       {
         brk_offset = a0 - (unsigned long)&__mmap_start0;
         if(brk_offset >= 2 * DEFAULT_MMAP_SIZE)
           return -1;
-        return 0;
+        return a0;
       }
   }
   __asm_syscall("r"(a7), "0"(a0))
@@ -132,6 +138,13 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
               tmp->size = 0;
             else
               tmp->size = tmp_size - a1 - sizeof(struct mmap_metadata); 
+            return ret;
+          }
+          else if(((tmp->type == 1) && (tmp->size < a1 + sizeof(struct mmap_metadata)) ) && 
+                        ((tmp->type == 1) && (tmp->size >= a1 )))
+          {
+            tmp->type = 2;
+            ret = (unsigned long)&__mmap_start0 + __mmap_size0 + sizeof(struct mmap_metadata); 
             return ret;
           }
           else
