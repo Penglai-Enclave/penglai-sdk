@@ -14,9 +14,26 @@
 /*      code & data    */
 /***********************/  /*0x1000*/
 
+struct call_enclave_arg_t
+{
+    unsigned long req_arg;
+    unsigned long req_vaddr;
+    unsigned long req_size;
+    unsigned long resp_val;
+    unsigned long resp_vaddr;
+    unsigned long resp_size;
+};
+
 void EAPP_RETURN(unsigned long rval) __attribute__((noreturn));
 unsigned long get_untrusted_mem_ptr(unsigned long * args){return args[12];}
 unsigned long get_untrusted_mem_size(unsigned long * args){return args[13];}
+
+unsigned long EAPP_ACQUIRE_ENCLAVE(char* name);
+unsigned long EAPP_CALL_ENCLAVE(unsigned long handle, struct call_enclave_arg_t *arg);
+
+unsigned long acquire_enclave(char* name);
+unsigned long call_enclave(unsigned long handle, struct call_enclave_arg_t* arg);
+
 #define EAPP_ENTRY __attribute__((__section__(".text._start")))
 #define EAPP_RESERVE_REG   asm volatile("addi sp,sp,-256\n\t" \
                                                                                             "sd ra, 1*8(sp)\n\t" \

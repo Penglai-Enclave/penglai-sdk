@@ -21,5 +21,6 @@ int prime(unsigned long * args)
 int EAPP_ENTRY main(){
   unsigned long * args;
   EAPP_RESERVE_REG;
+  unsigned long server_handle = acquire_enclave("hhh");
   prime(args);
 }
