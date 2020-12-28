@@ -25,8 +25,7 @@ struct call_enclave_arg_t
 };
 
 void EAPP_RETURN(unsigned long rval) __attribute__((noreturn));
-unsigned long get_untrusted_mem_ptr(unsigned long * args){return args[12];}
-unsigned long get_untrusted_mem_size(unsigned long * args){return args[13];}
+void SERVER_RETURN(struct call_enclave_arg_t *arg) __attribute__((noreturn));
 
 unsigned long EAPP_ACQUIRE_ENCLAVE(char* name);
 unsigned long EAPP_CALL_ENCLAVE(unsigned long handle, struct call_enclave_arg_t *arg);
