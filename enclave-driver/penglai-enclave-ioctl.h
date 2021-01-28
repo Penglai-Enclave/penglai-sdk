@@ -24,13 +24,32 @@
 
 #define DEFAULT_CLOCK_DELAY 100000
 #define DEFAULT_UNTRUSTED_PTR   0x0000001000000000
+#define DEFAULT_UNTRUSTED_SIZE  8192 // 8 KB
+
+#define MD_SIZE 64
+#define SIGNATURE_SIZE 64
+#define PRIVATE_KEY_SIZE 64
+#define PUBLIC_KEY_SIZE 32
+#define MAX_ELF_SIZE 512*1024*1024
+#define MAX_STACK_SIZE 64*1024*1024
+#define MAX_UNTRUSTED_MEM_SIZE 16*1024*1024
+#define HASH_SIZE              32
 
 struct penglai_enclave_user_param
 {
   unsigned long eid;
+  char name[NAME_LEN];
+  enclave_type_t type;
   unsigned long elf_ptr;
   long elf_size;
   long stack_size;
+  int shmid;
+  unsigned long shm_offset;
+  unsigned long shm_size;
+  int schrodinger_id;
+  unsigned long schrodinger_offset;
+  unsigned long schrodinger_size;
+
   unsigned long untrusted_mem_ptr;
   long untrusted_mem_size;
 };
@@ -38,12 +57,24 @@ struct penglai_enclave_user_param
 struct penglai_enclave_sbi_param
 {
   unsigned int * eid_ptr;
+  char name[NAME_LEN];
+  enclave_type_t type;
+
   unsigned long paddr;
   unsigned long size;
   unsigned long entry_point;
   unsigned long untrusted_ptr;
   unsigned long untrusted_size;
   unsigned long free_mem;
+
+  //enclave shared mem with kernel
+  unsigned long kbuffer;//paddr
+  unsigned long kbuffer_size;
+
+  //enclave shared mem with host
+  unsigned long shm_paddr;
+  unsigned long shm_size;
+  
   unsigned long *ecall_arg0;
   unsigned long *ecall_arg1;
   unsigned long *ecall_arg2;

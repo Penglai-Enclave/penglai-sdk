@@ -81,7 +81,8 @@ int penglai_enclave_create(struct file * filep, unsigned long args)
   
   spin_lock(&enclave_create_lock);
 
-  enclave = create_enclave(total_pages);
+  enclave = create_enclave(total_pages, enclave_param->name, enclave_param->type);
+  // enclave = create_enclave(total_pages);
   if(!enclave)
   {
     printk("KERNEL MODULE: cannot create enclave\n");
@@ -116,7 +117,10 @@ int penglai_enclave_create(struct file * filep, unsigned long args)
       enclave->enclave_mem->size, elf_entry, __pa(untrusted_mem_ptr),
       untrusted_mem_size, __pa(free_mem));
 
-  ret = SBI_CALL_1(SBI_SM_CREATE_ENCLAVE, __pa(&enclave_sbi_param));
+  if(enclave_sbi_param.type == SERVER_ENCLAVE)
+    ret = SBI_CALL_1(SBI_SM_CREATE_SERVER_ENCLAVE, __pa(&enclave_sbi_param));
+  else
+    ret = SBI_CALL_1(SBI_SM_CREATE_ENCLAVE, __pa(&enclave_sbi_param));
 
   if(ret < 0)
   {

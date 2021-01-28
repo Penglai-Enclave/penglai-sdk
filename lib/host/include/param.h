@@ -32,19 +32,45 @@
 #define DEFAULT_UNTRUSTED_PTR   0x0000001000000000
 #define DEFAULT_UNTRUSTED_SIZE  8192 // 8 KB
 
+#define NAME_LEN                16
+#define HASH_SIZE              32
+#define SIGNATURE_SIZE         64
+
+typedef enum
+{
+    NORMAL_ENCLAVE = 0,
+    SERVER_ENCLAVE = 1,
+    SHADOW_ENCLAVE
+} enclave_type_t;
+
 struct penglai_enclave_user_param
 {
   unsigned long eid;
+  char name[NAME_LEN];
+  enclave_type_t type;
   unsigned long elf_ptr;
   long elf_size;
   long stack_size;
+  int shmid;
+  unsigned long shm_offset;
+  unsigned long shm_size;
+  int schrodinger_id;
+  unsigned long schrodinger_offset;
+  unsigned long schrodinger_size;  
+
   unsigned long untrusted_mem_ptr;
   long untrusted_mem_size;
 };
 
 struct enclave_args
 {
+  char name[NAME_LEN];
+  enclave_type_t type;
   unsigned long stack_size;
+  int shmid;
+  unsigned long shm_offset;
+  unsigned long shm_size;
+  
   unsigned long untrusted_mem_ptr;
   unsigned long untrusted_mem_size;
 };

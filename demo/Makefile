@@ -6,6 +6,7 @@ all:
 	make -C crypt
 	make -C caller
 	make -C server
+	make -C test-caller
 clean:
 	make -C host clean
 	make -C prime clean
@@ -14,3 +15,4 @@ clean:
 	make -C crypt clean
 	make -C caller clean
 	make -C server clean
+	make -C test-caller clean

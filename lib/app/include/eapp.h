@@ -33,6 +33,12 @@ unsigned long EAPP_CALL_ENCLAVE(unsigned long handle, struct call_enclave_arg_t 
 unsigned long acquire_enclave(char* name);
 unsigned long call_enclave(unsigned long handle, struct call_enclave_arg_t* arg);
 
+void* EAPP_MMAP(unsigned long ocall_func_id, void* vaddr, unsigned long size);
+int EAPP_UNMAP(unsigned long ocall_func_id, void* vaddr, unsigned long size);
+
+void* eapp_mmap(void* vaddr, unsigned long size);
+int eapp_unmap(void* vaddr, unsigned long size);
+
 #define EAPP_ENTRY __attribute__((__section__(".text._start")))
 #define EAPP_RESERVE_REG   asm volatile("addi sp,sp,-256\n\t" \
                                                                                             "sd ra, 1*8(sp)\n\t" \

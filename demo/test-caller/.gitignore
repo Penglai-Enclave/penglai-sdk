@@ -1,0 +1,6 @@
+hello
+host
+test-caller
+*.dump
+*.o
+*.S
