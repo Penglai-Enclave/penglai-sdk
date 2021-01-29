@@ -54,11 +54,7 @@
 
 #define PRE_EXTEND_MONITOR_MEMORY 1
 
-#define SATP 0x180
-
 /*Abstract for enclave */
-#define ENCLAVE_DEFAULT_KBUFFER_ORDER           0
-#define ENCLAVE_DEFAULT_KBUFFER_SIZE            ((1<<ENCLAVE_DEFAULT_KBUFFER_ORDER)*RISCV_PGSIZE)
 #define NAME_LEN                                16
 
 #ifndef _PENGLAI_ENCLAVE_TYPE
@@ -80,13 +76,10 @@ typedef struct penglai_enclave
 
   untrusted_mem_t* untrusted_mem;
   enclave_mem_t* enclave_mem;
-  vaddr_t kbuffer;
-  unsigned long kbuffer_size;
   unsigned long ocall_func_id;
   unsigned long ocall_arg0;
   unsigned long ocall_arg1;
   unsigned long ocall_syscall_num;
-  unsigned long satp;
 } enclave_t;
 
 typedef struct require_sec_memory

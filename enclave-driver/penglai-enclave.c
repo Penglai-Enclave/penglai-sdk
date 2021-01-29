@@ -44,7 +44,6 @@ enclave_t* get_enclave_by_id(unsigned int ueid)
 enclave_t* create_enclave(int total_pages, char* name, enclave_type_t type)
 {
   vaddr_t addr = 0;
-  vaddr_t kbuffer = 0;
   paddr_t pa = 0;
   enclave_t* enclave = kmalloc(sizeof(enclave_t), GFP_KERNEL);
   enclave_mem_t* enclave_mem = kmalloc(sizeof(enclave_mem_t), GFP_KERNEL);
@@ -99,9 +98,6 @@ enclave_t* create_enclave(int total_pages, char* name, enclave_type_t type)
   INIT_LIST_HEAD(&enclave_mem->free_mem);
   enclave_mem_int(enclave_mem, addr, size, __pa(addr));
   enclave->enclave_mem = enclave_mem;
-  enclave->satp = csr_read(sptbr);
-  enclave->kbuffer = kbuffer;
-  enclave->kbuffer_size = ENCLAVE_DEFAULT_KBUFFER_SIZE;
   enclave->type = type;
   memcpy(enclave->name, name, NAME_LEN);
   enclave->untrusted_mem = untrusted_mem;

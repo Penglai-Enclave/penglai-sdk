@@ -1,5 +1,4 @@
 #include "penglai-enclave.h"
-#include <sys/mman.h>
 
 void PLenclave_init(struct PLenclave *PLenclave)
 {
@@ -33,9 +32,6 @@ int PLenclave_create(struct PLenclave* PLenclave, struct elf_args* u_elffile, st
   PLenclave->user_param.elf_ptr = (unsigned long)u_elffile->ptr;
   PLenclave->user_param.elf_size = u_elffile->size;
   PLenclave->user_param.stack_size = u_param->stack_size;
-  PLenclave->user_param.shmid = u_param->shmid;
-  PLenclave->user_param.shm_offset = u_param->shm_offset;
-  PLenclave->user_param.shm_size = u_param->shm_size;
   PLenclave->user_param.type = u_param->type;
   memcpy(PLenclave->user_param.name, u_param->name, NAME_LEN);
 
