@@ -28,6 +28,13 @@ int create_sbi_param(enclave_t* enclave, struct penglai_enclave_sbi_param * encl
   enclave_sbi_param -> untrusted_ptr = untrusted_ptr ;
   enclave_sbi_param -> untrusted_size = untrusted_size;
   enclave_sbi_param -> free_mem = free_mem;
+
+  enclave_sbi_param->type = enclave->type;
+  memcpy(enclave_sbi_param->name, enclave->name, NAME_LEN);
+
+    //enclave share mem with kernel
+  enclave_sbi_param->kbuffer = __pa(enclave->kbuffer);
+  enclave_sbi_param->kbuffer_size = enclave->kbuffer_size;
   return 0;
 }
 
@@ -82,7 +89,6 @@ int penglai_enclave_create(struct file * filep, unsigned long args)
   spin_lock(&enclave_create_lock);
 
   enclave = create_enclave(total_pages, enclave_param->name, enclave_param->type);
-  // enclave = create_enclave(total_pages);
   if(!enclave)
   {
     printk("KERNEL MODULE: cannot create enclave\n");
@@ -218,6 +224,7 @@ int penglai_enclave_run(struct file *filep, unsigned long args)
   enclave_t * enclave;
   unsigned long ocall_func_id;
   int ret =0;
+  int resume_id = 0;
 
   enclave = get_enclave_by_id(eid);
   if(!enclave)
@@ -227,13 +234,44 @@ int penglai_enclave_run(struct file *filep, unsigned long args)
   }
 
   ret = SBI_CALL_1(SBI_SM_RUN_ENCLAVE, enclave->eid);
-  /*
-      FIXME: handler the ocall from enclave;
-   */
-  while(ret == ENCLAVE_TIMER_IRQ)
+  resume_id = enclave->eid;
+
+  while((ret == ENCLAVE_TIMER_IRQ) || (ret == ENCLAVE_OCALL))
   {
-    schedule();
-    ret = SBI_CALL_3(SBI_SM_RESUME_ENCLAVE, enclave->eid, RESUME_FROM_TIMER_IRQ, get_cycles64() + DEFAULT_CLOCK_DELAY);
+    if (ret == ENCLAVE_TIMER_IRQ)
+    {
+      schedule();
+      ret = SBI_CALL_3(SBI_SM_RESUME_ENCLAVE, enclave->eid, RESUME_FROM_TIMER_IRQ, get_cycles64() + DEFAULT_CLOCK_DELAY);
+    }
+    else
+    {
+      ocall_func_id = enclave->ocall_func_id;
+      switch(ocall_func_id)
+      {
+        case OCALL_MMAP:
+        {
+          // TODO
+          break;
+        }
+        case OCALL_UNMAP:
+        {
+          // TODO
+          break;
+        }
+        case OCALL_SYS_WRITE:
+        {
+          ((char*)(enclave->kbuffer))[511] = '\0';
+          printk((void*)(enclave->kbuffer));
+          ret = SBI_CALL_3(SBI_SM_RESUME_ENCLAVE, resume_id, RESUME_FROM_OCALL, OCALL_SYS_WRITE);
+          break;
+        }
+        default:
+        {
+          printk("KERNEL MODULE: ocall \n");
+          ret = SBI_CALL_2(SBI_SM_RESUME_ENCLAVE, resume_id, RESUME_FROM_OCALL);
+        }
+      }
+    }
   }
 
   if(ret < 0)

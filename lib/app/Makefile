@@ -7,7 +7,7 @@ AR = riscv64-unknown-elf-ar
 ARFLAGS = rcs
 
 ASM_SRCS = src/eret.S
-C_SRCS = src/server_enclave.c src/mmap.c
+C_SRCS = src/server_enclave.c src/mmap.c src/print.c
 
 A_OBJS = $(patsubst %.S,%.o,$(ASM_SRCS))
 C_OBJS = $(patsubst %.c,%.o,$(C_SRCS))

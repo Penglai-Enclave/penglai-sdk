@@ -39,12 +39,14 @@
 #define OCALL_SYSCALL                  2003
 #define OCALL_MMAP                        1
 #define OCALL_UNMAP                       2
+#define OCALL_SYS_WRITE                   3
 
 #define RESUME_FROM_SYSCALL               1
 #define RESUME_FROM_TIMER_IRQ          2000
 #define RESUME_FROM_MALLOC_PAGES       2001
 #define RESUME_FROM_FREE_PAGES         2002
 #define RESUME_FROM_STOP               2003
+#define RESUME_FROM_OCALL              2004
 
 #define FLAG_DESTROY                      0
 #define DIRECT_DESTROY                    1
@@ -55,6 +57,8 @@
 #define PRE_EXTEND_MONITOR_MEMORY 1
 
 /*Abstract for enclave */
+#define ENCLAVE_DEFAULT_KBUFFER_ORDER           0
+#define ENCLAVE_DEFAULT_KBUFFER_SIZE            ((1<<ENCLAVE_DEFAULT_KBUFFER_ORDER)*RISCV_PGSIZE)
 #define NAME_LEN                                16
 
 #ifndef _PENGLAI_ENCLAVE_TYPE
@@ -76,6 +80,8 @@ typedef struct penglai_enclave
 
   untrusted_mem_t* untrusted_mem;
   enclave_mem_t* enclave_mem;
+  vaddr_t kbuffer;
+  unsigned long kbuffer_size;
   unsigned long ocall_func_id;
   unsigned long ocall_arg0;
   unsigned long ocall_arg1;

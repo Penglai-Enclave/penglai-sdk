@@ -11,7 +11,11 @@
 #define OCALL_CACHE_BINDING    2004
 #define OCALL_CACHE_UNBINDING  2005
 
+#define ENCLAVE_DEFAULT_KBUFFER_SIZE              0x1000UL
+#define ENCLAVE_DEFAULT_KBUFFER         0xffffffe000000000UL
+
 #define OCALL_MMAP          1 
 #define OCALL_UNMAP         2
+#define OCALL_SYS_WRITE     3
 
 #endif

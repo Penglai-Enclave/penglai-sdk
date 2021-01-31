@@ -44,6 +44,7 @@ enclave_t* get_enclave_by_id(unsigned int ueid)
 enclave_t* create_enclave(int total_pages, char* name, enclave_type_t type)
 {
   vaddr_t addr = 0;
+  vaddr_t kbuffer = 0;
   paddr_t pa = 0;
   enclave_t* enclave = kmalloc(sizeof(enclave_t), GFP_KERNEL);
   enclave_mem_t* enclave_mem = kmalloc(sizeof(enclave_mem_t), GFP_KERNEL);
@@ -93,11 +94,24 @@ enclave_t* create_enclave(int total_pages, char* name, enclave_type_t type)
     goto free_enclave;
   }
 
+  if(type == NORMAL_ENCLAVE)
+  {
+    kbuffer = __get_free_pages(GFP_KERNEL, ENCLAVE_DEFAULT_KBUFFER_ORDER);
+    if(!kbuffer)
+    {
+      printk("KERNEL MODULE: failed to allocate kbuffer\n");
+      goto free_enclave;
+    }
+    memset((void*)kbuffer, 0, ENCLAVE_DEFAULT_KBUFFER_SIZE);
+  }
+
   addr = (vaddr_t)__va(pa);
   size = require_sec_memory.resp_size;
   INIT_LIST_HEAD(&enclave_mem->free_mem);
   enclave_mem_int(enclave_mem, addr, size, __pa(addr));
   enclave->enclave_mem = enclave_mem;
+  enclave->kbuffer = kbuffer;
+  enclave->kbuffer_size = ENCLAVE_DEFAULT_KBUFFER_SIZE;
   enclave->type = type;
   memcpy(enclave->name, name, NAME_LEN);
   enclave->untrusted_mem = untrusted_mem;
