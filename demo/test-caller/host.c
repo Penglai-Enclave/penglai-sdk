@@ -45,31 +45,6 @@ server:
   if(argc == 3)
     goto caller;
 
-server1:
-  server1_enclaveFile = malloc(sizeof(struct elf_args));
-  char *server1_eappfile = argv[3];
-  elf_args_init(server1_enclaveFile, server1_eappfile);
-  
-  if(!elf_valid(server1_enclaveFile))
-  {
-    printf("host:error when initializing server1_enclaveFile\n");
-    goto out;
-  }
-
-  server1_enclave = malloc(sizeof(struct PLenclave));
-  server1_params = malloc(sizeof(struct enclave_args));
-  PLenclave_init(server1_enclave);
-  enclave_param_init(server1_params);
-  strcpy(server1_params->name, "test-server1");
-  server1_params->type = SERVER_ENCLAVE;
-
-  if(PLenclave_create(server1_enclave, server1_enclaveFile, server1_params) < 0 )
-  {
-    printf("host:failed to create server1_enclave\n");
-    goto out;
-  }
-
-
 caller:
   caller_enclaveFile = malloc(sizeof(struct elf_args));
   char *caller_eappfile = argv[1];
@@ -107,20 +82,6 @@ out:
   if(server_params)
   {
     free(server_params);
-  }
-  if(server1_enclaveFile)
-  {
-    elf_args_destroy(server1_enclaveFile);
-    free(server1_enclaveFile);
-  }
-  if(server1_enclave)
-  {
-    PLenclave_destroy(server1_enclave);
-    free(server1_enclave);
-  }
-  if(server1_params)
-  {
-    free(server1_params);
   }
   if(caller_enclaveFile)
   {

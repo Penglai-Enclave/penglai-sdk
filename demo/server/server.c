@@ -1,13 +1,13 @@
 #include "eapp.h"
+#include "print.h"
 
 int EAPP_ENTRY main(){
-unsigned long* args;
+  unsigned long* args;
   EAPP_RESERVE_REG;
-  char server_name[16];
-  strcpy(server_name, "test-server");
-  unsigned long server_handle = acquire_enclave(server_name);
-  struct call_enclave_arg_t call_arg;
-  call_enclave(server_handle, &call_arg);
-  call_arg.resp_val = 3;
-  SERVER_RETURN(&call_arg);
+  unsigned long arg0 = args[10];
+  void* vaddr = (void*)args[11];
+  unsigned long size = args[12];
+  eapp_print("server begin to run\n");
+  struct call_enclave_arg_t ret_arg;
+  SERVER_RETURN(&ret_arg);
 }
