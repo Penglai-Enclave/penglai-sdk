@@ -107,6 +107,7 @@ int penglai_enclave_create(struct file * filep, unsigned long args)
     printk("KERNEL MODULE: elf_entry reset is failed \n");
     goto destroy_enclave;
   }
+  printk("KERNEL MODULE: type: %d, elf_entry: %lx\n", enclave->type, elf_entry); 
 
   untrusted_mem_size = 0x1 << (ilog2(untrusted_mem_size - 1) + 1);
   if((untrusted_mem_ptr == 0) && (untrusted_mem_size > 0))

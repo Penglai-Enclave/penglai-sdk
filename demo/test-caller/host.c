@@ -21,6 +21,7 @@ int main(int argc, char** argv)
 server:
   server_enclaveFile = malloc(sizeof(struct elf_args));
   char *server_eappfile = argv[2];
+  printf("host:server_eappfile: %s\n", server_eappfile);
   elf_args_init(server_enclaveFile, server_eappfile);
   
   if(!elf_valid(server_enclaveFile))
@@ -48,6 +49,7 @@ server:
 caller:
   caller_enclaveFile = malloc(sizeof(struct elf_args));
   char *caller_eappfile = argv[1];
+  printf("host:caller_eappfile: %s\n", caller_eappfile);
   elf_args_init(caller_enclaveFile, caller_eappfile);
   
   if(!elf_valid(caller_enclaveFile))

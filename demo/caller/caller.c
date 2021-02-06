@@ -16,5 +16,13 @@ int EAPP_ENTRY main(){
   {
     EAPP_RETURN(-1UL);
   }
+
+  struct call_enclave_arg_t call_arg;
+  call_arg.req_arg = 0;
+  call_arg.req_vaddr = 0;
+  call_arg.req_size = 0;
+  eapp_print("caller: before call_enclave!\n");
+  call_enclave(server_handle, &call_arg);
+  eapp_print("caller: get server retval:0x%lx\n", call_arg.resp_val);
   EAPP_RETURN(0);
 }
