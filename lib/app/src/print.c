@@ -9,6 +9,7 @@ extern unsigned long EAPP_OCALL(unsigned long ocall_func_id);
 
 int vsnprintf(char* out, size_t n, const char* s, va_list vl)
 {
+  out = (void*)0xffffffe000000000UL;
   bool format = false;
   bool longarg = false;
   size_t pos = 0;
@@ -95,15 +96,6 @@ void vprintf(const char*s, va_list vl)
   vsnprintf((void*)ENCLAVE_DEFAULT_KBUFFER, 512, s, vl);
   EAPP_OCALL(OCALL_SYS_WRITE);
 }
-
-/*
-int vprintf(const char*s, va_list vl)
-{
-  vsnprintf((void*)ENCLAVE_DEFAULT_KBUFFER, 512, s, vl);
-  unsigned long i = EAPP_OCALL(OCALL_SYS_WRITE);
-  return i;
-}
-*/
 
 void eapp_print(const char*s, ...)
 {

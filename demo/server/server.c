@@ -7,7 +7,7 @@ int EAPP_ENTRY main(){
   unsigned long arg0 = args[10];
   void* vaddr = (void*)args[11];
   unsigned long size = args[12];
-  eapp_print("server begin to run\n");
+  eapp_print("server begin to run!\n");
   struct call_enclave_arg_t ret_arg;
   ret_arg.req_vaddr = vaddr;
   ret_arg.req_size = size;
