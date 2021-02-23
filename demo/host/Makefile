@@ -1,5 +1,3 @@
-PENGLAI_SDK := ../../../sdk
-
 CC=riscv64-unknown-linux-gnu-gcc
 
 HOST=host

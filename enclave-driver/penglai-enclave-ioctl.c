@@ -250,12 +250,22 @@ int penglai_enclave_run(struct file *filep, unsigned long args)
       {
         case OCALL_MMAP:
         {
-          // TODO
+          uintptr_t order = ilog2((enclave->ocall_arg1 >> RISCV_PGSHIFT) - 1) + 1;
+          uintptr_t vaddr = __get_free_pages(GFP_KERNEL, order);
+          if(!vaddr)
+          {
+            ret = -1;
+            break;
+          }
+          ret = SBI_CALL_5(SBI_SM_RESUME_ENCLAVE, resume_id, RESUME_FROM_OCALL, OCALL_MMAP, __pa(vaddr), (1 << order) * RISCV_PGSIZE);
           break;
         }
         case OCALL_UNMAP:
         {
-          // TODO
+          uintptr_t vaddr = __va(enclave->ocall_arg0);
+          uintptr_t order = ilog2((enclave->ocall_arg1 >> RISCV_PGSHIFT) - 1) + 1;
+          free_pages(vaddr, order);
+          ret = SBI_CALL_3(SBI_SM_RESUME_ENCLAVE, resume_id, RESUME_FROM_OCALL, OCALL_UNMAP);
           break;
         }
         case OCALL_SYS_WRITE:

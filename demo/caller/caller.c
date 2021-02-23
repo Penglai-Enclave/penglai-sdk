@@ -17,12 +17,42 @@ int EAPP_ENTRY main(){
     EAPP_RETURN(-1UL);
   }
 
+  unsigned long arg0 = 0x19960000UL;
+  unsigned long size = 4*4096;
+  int *nums = eapp_mmap(NULL, size);
+  for(int i = 0; i < size/sizeof(int); i++)
+  {
+    nums[i] = 1;
+  }
+
   struct call_enclave_arg_t call_arg;
-  call_arg.req_arg = 0;
-  call_arg.req_vaddr = 0;
-  call_arg.req_size = 0;
+  call_arg.req_arg = arg0;
+  call_arg.req_vaddr = nums;
+  call_arg.req_size = size;
   eapp_print("caller: before call_enclave!\n");
   call_enclave(server_handle, &call_arg);
+
+  if(call_arg.req_vaddr)
+  {
+    unsigned long sum = 0;
+    for(int i = 0; i < size / sizeof(int); i++)
+    {
+      sum += nums[i];
+    }
+    eapp_print("caller: read req_vaddr after calling server:0x%lx\n", sum);
+  }
+
+  if(call_arg.resp_vaddr)
+  {
+    unsigned long sum = 0;
+    nums = (int*)call_arg.resp_vaddr;
+    for(int i = 0; i < call_arg.resp_size / sizeof(int); i++)
+    {
+      sum += nums[i];
+    }
+    eapp_print("caller: read resp_vaddr after calling server:0x%lx\n", sum);
+  }
+
   eapp_print("caller: get server retval:0x%lx\n", call_arg.resp_val);
   EAPP_RETURN(0);
 }
