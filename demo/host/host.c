@@ -24,9 +24,6 @@ void* create_enclave(void* args0)
   struct elf_args * enclaveFile = (struct elf_args *)in;
   params->untrusted_mem_size = DEFAULT_UNTRUSTED_SIZE;
   params->untrusted_mem_ptr = 0;
-  // strcpy(params->name, "test-server");
-  // params->type = SERVER_ENCLAVE;
-
   if(PLenclave_create(enclave, enclaveFile, params) < 0 )
   {
     printf("host:%d: failed to create enclave\n");

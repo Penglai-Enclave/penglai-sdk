@@ -9,7 +9,6 @@ typedef enum
 {
   NORMAL_ENCLAVE = 0,
   SERVER_ENCLAVE = 1,
-  SHADOW_ENCLAVE
 } enclave_type_t;
 #endif
 
