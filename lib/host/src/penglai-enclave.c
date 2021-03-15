@@ -2,6 +2,7 @@
 
 void PLenclave_init(struct PLenclave *PLenclave)
 {
+  memset(PLenclave, 0, sizeof(struct PLenclave));
   PLenclave->elffile = NULL;
   PLenclave->eid = -1;
   PLenclave->fd = open(PENGLAI_ENCLAVE_DEV_PATH,O_RDWR);
@@ -31,6 +32,9 @@ int PLenclave_create(struct PLenclave* PLenclave, struct elf_args* u_elffile, st
   PLenclave->user_param.elf_ptr = (unsigned long)u_elffile->ptr;
   PLenclave->user_param.elf_size = u_elffile->size;
   PLenclave->user_param.stack_size = u_param->stack_size;
+  PLenclave->user_param.type = u_param->type;
+  memcpy(PLenclave->user_param.name, u_param->name, NAME_LEN);
+
   PLenclave->user_param.untrusted_mem_ptr = u_param->untrusted_mem_ptr;
   PLenclave->user_param.untrusted_mem_size = u_param->untrusted_mem_size;
   if(PLenclave->user_param.elf_ptr == 0 || PLenclave->user_param.elf_size <= 0)

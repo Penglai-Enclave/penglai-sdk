@@ -173,10 +173,13 @@ vaddr_t map_va2pa(enclave_mem_t* enclave_mem, vaddr_t vaddr, paddr_t paddr, unsi
 void enclave_mem_int(enclave_mem_t* enclave_mem, vaddr_t vaddr, int size, paddr_t paddr)
 {
   pt_entry_t *pte;
+  pt_entry_t *dummy_pte;
   init_free_mem(&enclave_mem->free_mem, vaddr, size / RISCV_PGSIZE);
   enclave_mem -> vaddr = vaddr;
   enclave_mem -> paddr = paddr;
   enclave_mem -> size = size;
+  //reserve for monitor vma_struct
+  dummy_pte = (pt_entry_t *)get_free_mem(&enclave_mem->free_mem);
   pte = (pt_entry_t *)get_free_mem(&enclave_mem->free_mem);
   enclave_mem -> enclave_root_pt = pte;
   /*

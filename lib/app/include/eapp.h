@@ -1,22 +1,57 @@
 #ifndef  _EAPP_COMMON
 #define _EAPP_COMMON
 
-/***********************/
-/*                     */
-/*                     */
-/***********************/  /*0x1000000000 + 2*4096*/
-/*    untrusted mem    */
-/***********************/  /*0x1000000000*/
-/*                     */
-/***********************/  /*brk + 16*4096*/
-/*        heap         */
-/***********************/  /*brk*/
-/*      code & data    */
-/***********************/  /*0x1000*/
+//default layout of enclave
+//#####################
+//#   reserved for    #
+//#       s mode      #
+//##################### 0xffffffe000000000 //actually this is the start address of kernel's image
+//#       hole        #
+//##################### 0x0000004000000000
+//#                   #
+//#       stack       #
+//#                   #
+//##################### 0x0000003000000000
+//#                   #
+//#       mmap        #
+//#                   #
+//#                   #
+//#       heap        #
+//#                   #
+//##################### 0x0000002000000000
+//#  untrusted memory #
+//#  shared with host #
+//##################### 0x0000001000000000
+//#     code & data   #
+//##################### 0x0000000000001000
+//#       hole        #
+//##################### 0x0
+
+struct call_enclave_arg_t
+{
+    unsigned long req_arg;
+    unsigned long req_vaddr;
+    unsigned long req_size;
+    unsigned long resp_val;
+    unsigned long resp_vaddr;
+    unsigned long resp_size;
+};
 
 void EAPP_RETURN(unsigned long rval) __attribute__((noreturn));
-unsigned long get_untrusted_mem_ptr(unsigned long * args){return args[12];}
-unsigned long get_untrusted_mem_size(unsigned long * args){return args[13];}
+void SERVER_RETURN(struct call_enclave_arg_t *arg) __attribute__((noreturn));
+
+unsigned long EAPP_ACQUIRE_ENCLAVE(char* name);
+unsigned long EAPP_CALL_ENCLAVE(unsigned long handle, struct call_enclave_arg_t *arg);
+
+unsigned long acquire_enclave(char* name);
+unsigned long call_enclave(unsigned long handle, struct call_enclave_arg_t* arg);
+
+void* EAPP_MMAP(unsigned long ocall_func_id, void* vaddr, unsigned long size);
+int EAPP_UNMAP(unsigned long ocall_func_id, void* vaddr, unsigned long size);
+
+void* eapp_mmap(void* vaddr, unsigned long size);
+int eapp_unmap(void* vaddr, unsigned long size);
+
 #define EAPP_ENTRY __attribute__((__section__(".text._start")))
 #define EAPP_RESERVE_REG   asm volatile("addi sp,sp,-256\n\t" \
                                                                                             "sd ra, 1*8(sp)\n\t" \

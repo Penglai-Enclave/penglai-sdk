@@ -24,10 +24,13 @@
 
 #define DEFAULT_CLOCK_DELAY 100000
 #define DEFAULT_UNTRUSTED_PTR   0x0000001000000000
+#define DEFAULT_UNTRUSTED_SIZE  8192 // 8 KB
 
 struct penglai_enclave_user_param
 {
   unsigned long eid;
+  char name[NAME_LEN];
+  enclave_type_t type;
   unsigned long elf_ptr;
   long elf_size;
   long stack_size;
@@ -38,12 +41,18 @@ struct penglai_enclave_user_param
 struct penglai_enclave_sbi_param
 {
   unsigned int * eid_ptr;
+  char name[NAME_LEN];
+  enclave_type_t type;
+
   unsigned long paddr;
   unsigned long size;
   unsigned long entry_point;
   unsigned long untrusted_ptr;
   unsigned long untrusted_size;
   unsigned long free_mem;
+  //enclave shared mem with kernel
+  unsigned long kbuffer;//paddr
+  unsigned long kbuffer_size;
   unsigned long *ecall_arg0;
   unsigned long *ecall_arg1;
   unsigned long *ecall_arg2;

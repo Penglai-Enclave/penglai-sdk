@@ -4,6 +4,7 @@ unsigned long current_untrusted_ptr = DEFAULT_UNTRUSTED_PTR;
 
 void enclave_param_init(struct enclave_args* enclave_args)
 {
+  enclave_args->type = NORMAL_ENCLAVE;
   enclave_args->stack_size = DEFAULT_STACK_SIZE;
   enclave_args->untrusted_mem_ptr = DEFAULT_UNTRUSTED_PTR;
   enclave_args->untrusted_mem_size=DEFAULT_UNTRUSTED_SIZE;
