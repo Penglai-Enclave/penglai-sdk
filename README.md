@@ -4,7 +4,7 @@ This is the SDK for Penglai TEE (sPMP and PMP version).
 
 If you are seeking for SDK for Penglai-TVM, please refer [Penglai-SDK-TVM](https://github.com/Penglai-Enclave/Penglai-sdk-TVM)
 
-This repo contains enclave-driver, host-side SDK, and enclave-app SDK.
+This repo contains SDK to write host-side applications and enclave-apps, as well as some demos
 
 ## Quick Start
 
