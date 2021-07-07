@@ -1,4 +1,4 @@
-#define SYS_eret 89 //ret to host
+#define SYS_eret 99 //ret to host
 .globl EAPP_RETURN
 EAPP_RETURN:
 	li a6, SYS_eret
