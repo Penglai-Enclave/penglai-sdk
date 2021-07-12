@@ -1,0 +1,4 @@
+deadloop
+*.dump
+*.o
+*.S

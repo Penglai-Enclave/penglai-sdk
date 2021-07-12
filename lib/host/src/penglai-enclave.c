@@ -8,7 +8,7 @@ void PLenclave_init(struct PLenclave *PLenclave)
   if(PLenclave->fd < 0)
   {
     fprintf(stderr,"LIB: cannot open enclave dev\n");
-  }  
+  }
 }
 
 void PLenclave_finalize(struct PLenclave *PLenclave)
@@ -61,19 +61,20 @@ int PLenclave_run(struct PLenclave *PLenclave)
     return -1;
   }
 
-  return 0; 
+  return 0;
 }
 
 int PLenclave_stop(struct PLenclave *PLenclave)
 {
   int ret =0;
+  fprintf(stderr, "[@%s] beign\n", __func__);
   ret = ioctl(PLenclave->fd, PENGLAI_ENCLAVE_IOC_STOP_ENCLAVE, &(PLenclave->user_param));
   if (ret < 0 )
   {
-    fprintf(stderr, "LIB: ioctl stop enclave is failed \n");
+    fprintf(stderr, "LIB: ioctl stop enclave is failed with ret:%d\n", ret);
     return -1;
   }
-  return 0;  
+  return 0;
 }
 
 int PLenclave_resume(struct PLenclave *PLenclave)
@@ -82,10 +83,10 @@ int PLenclave_resume(struct PLenclave *PLenclave)
   ret = ioctl(PLenclave->fd, PENGLAI_ENCLAVE_IOC_RESUME_ENCLAVE, &(PLenclave->user_param));
   if (ret < 0 )
   {
-    fprintf(stderr, "LIB: ioctl stop enclave is failed \n");
+    fprintf(stderr, "LIB: ioctl resume enclave is failed \n");
     return -1;
   }
-  return 0; 
+  return 0;
 }
 
 int PLenclave_destroy(struct PLenclave *PLenclave)
@@ -94,7 +95,7 @@ int PLenclave_destroy(struct PLenclave *PLenclave)
   ret = ioctl(PLenclave->fd, PENGLAI_ENCLAVE_IOC_DESTROY_ENCLAVE, &(PLenclave->user_param));
   if (ret < 0 )
   {
-    fprintf(stderr, "LIB: ioctl stop enclave is failed \n");
+    fprintf(stderr, "LIB: ioctl destory enclave is failed \n");
     return -1;
   }
   return 0;
@@ -111,6 +112,6 @@ int PLenclave_debug_print(struct PLenclave *PLenclave)
     return -1;
   }
 
-  return 0; 
+  return 0;
 }
 
