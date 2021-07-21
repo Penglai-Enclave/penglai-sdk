@@ -1,4 +1,6 @@
 #include "eapp.h"
+#include "print.h"
+
 int prime_loop(int num)
 {
   unsigned long count;
@@ -13,6 +15,7 @@ int prime_loop(int num)
 
 int prime(unsigned long * args)
 {
+  eapp_print("%s is running\n", "Prime");
   unsigned long ret;
   ret = prime_loop(111);
   EAPP_RETURN(ret);
