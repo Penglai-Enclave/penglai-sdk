@@ -15,6 +15,8 @@
 /***********************/  /*0x1000*/
 
 void EAPP_RETURN(unsigned long rval) __attribute__((noreturn));
+unsigned long get_untrusted_mem_ptr(unsigned long * args){return args[12];}
+unsigned long get_untrusted_mem_size(unsigned long * args){return args[13];}
 #define EAPP_ENTRY __attribute__((__section__(".text._start")))
 #define EAPP_RESERVE_REG   asm volatile("addi sp,sp,-256\n\t" \
                                                                                             "sd ra, 1*8(sp)\n\t" \

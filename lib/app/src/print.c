@@ -1,7 +1,6 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "string.h"
-#include "eapp.h"
 #include "ocall.h"
 #include "print.h"
 
@@ -95,15 +94,6 @@ void vprintf(const char*s, va_list vl)
     vsnprintf((void*)ENCLAVE_DEFAULT_KBUFFER, 512, s, vl);
     EAPP_OCALL(OCALL_SYS_WRITE);
 }
-
-/*
-int vprintf(const char*s, va_list vl)
-{
-  vsnprintf((void*)ENCLAVE_DEFAULT_KBUFFER, 512, s, vl);
-  unsigned long i = EAPP_OCALL(OCALL_SYS_WRITE);
-  return i;
-}
-*/
 
 void eapp_print(const char*s, ...)
 {
