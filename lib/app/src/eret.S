@@ -13,4 +13,4 @@ EAPP_OCALL:
 	li a6, SYS_eret
 	li a7, 0x100101 //SBI_EXT_PENGLAI_ENCLAVE
 	ecall
-    ret
+	ret
