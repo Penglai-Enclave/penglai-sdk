@@ -11,6 +11,6 @@ EAPP_RETURN:
 .globl EAPP_OCALL
 EAPP_OCALL:
 	li a6, SYS_ocall
-    li a7, 0x100101 //SBI_EXT_PENGLAI_ENCLAVE
+        li a7, 0x100101 //SBI_EXT_PENGLAI_ENCLAVE
 	ecall
     ret
