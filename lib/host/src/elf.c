@@ -26,7 +26,7 @@ void elf_args_init(struct elf_args* elf_args, char *filename)
   }
 
   elf_args->ptr = mmap(NULL, elf_args->size, PROT_READ, MAP_PRIVATE, elf_args->fd, 0);
-  if(!elf_args->ptr)
+  if (elf_args->ptr == MAP_FAILED)
   {
     fprintf(stderr, "LIB: can not mmap enough memory for elf file");
     return;
