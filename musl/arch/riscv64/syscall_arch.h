@@ -1,7 +1,7 @@
 #define __SYSCALL_LL_E(x) (x)
 #define __SYSCALL_LL_O(x) (x)
 #define UNTRUSTED_MEM_PTR 0x0000001000000000
-#define DEFAULT_MMAP_SIZE 4096 * 8
+#define DEFAULT_MMAP_SIZE 4096 * 8192
 extern char __mmap_start0;
 
 #define __asm_syscall(...) \
@@ -120,13 +120,15 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
   struct mmap_metadata* tmp;
   unsigned long ret;
   unsigned long __mmap_size0 = 0;
+  unsigned long real_mmap_start0 = ((unsigned long)&__mmap_start0) + 4096 * 128;// reserved for the initial small chunk array
+  unsigned long real_default_mmap_size = DEFAULT_MMAP_SIZE - 4096 * 128;
   switch(n)
   {
     case SYS_mmap:
-      tmp =(struct mmap_metadata*)((unsigned long)&__mmap_start0 + __mmap_size0);
+      tmp =(struct mmap_metadata*)(real_mmap_start0 + __mmap_size0);
       while(tmp)
       {
-        if((unsigned long)tmp < (unsigned long)&__mmap_start0 + DEFAULT_MMAP_SIZE)
+        if((unsigned long)tmp < real_mmap_start0 + real_default_mmap_size)
         {
           if((tmp->type == 0) || ((tmp->type == 1) && (tmp->size >= a1 + sizeof(struct mmap_metadata)) ) )
           {
@@ -134,10 +136,10 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
             unsigned char tmp_type = tmp->type;
             tmp->type = 2;
             tmp->size = a1;
-            ret = (unsigned long)&__mmap_start0 + __mmap_size0 + sizeof(struct mmap_metadata); 
+            ret = real_mmap_start0 + __mmap_size0 + sizeof(struct mmap_metadata);
             __mmap_size0 += sizeof(struct mmap_metadata) + a1;
-            tmp =(struct mmap_metadata*)((unsigned long)&__mmap_start0 + __mmap_size0);
-            if((unsigned long)tmp >= (unsigned long)&__mmap_start0 + DEFAULT_MMAP_SIZE)
+            tmp =(struct mmap_metadata*)(real_mmap_start0 + __mmap_size0);
+            if((unsigned long)tmp >= real_mmap_start0 + real_default_mmap_size)
             {
               ret -= sizeof(struct mmap_metadata);
               ((struct mmap_metadata*)ret)->type = tmp_type;
@@ -156,13 +158,13 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
                         ((tmp->type == 1) && (tmp->size >= a1 )))
           {
             tmp->type = 2;
-            ret = (unsigned long)&__mmap_start0 + __mmap_size0 + sizeof(struct mmap_metadata); 
+            ret = real_mmap_start0 + __mmap_size0 + sizeof(struct mmap_metadata);
             return ret;
           }
           else
           {  
             __mmap_size0 += sizeof(struct mmap_metadata) + tmp->size;
-            tmp = (struct mmap_metadata *)((unsigned long)&__mmap_start0 + __mmap_size0);
+            tmp = (struct mmap_metadata *)(real_mmap_start0 + __mmap_size0);
           }
         }
         else
