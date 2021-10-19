@@ -77,6 +77,22 @@ int PLenclave_stop(struct PLenclave *PLenclave)
   return 0;
 }
 
+int PLenclave_attest(struct PLenclave *PLenclave, uintptr_t nonce)
+{
+  int ret = 0;
+  PLenclave->attest_param.eid = PLenclave->eid;
+  PLenclave->attest_param.nonce = nonce;
+  ret = ioctl(PLenclave->fd, PENGLAI_ENCLAVE_IOC_ATTEST_ENCLAVE, &(PLenclave->attest_param));
+  if(ret < 0)
+  {
+    fprintf(stderr, "LIB: ioctl attest enclave is failed ret %d \n", ret);
+    return -1;
+  }
+
+  return 0; 
+}
+
+
 int PLenclave_resume(struct PLenclave *PLenclave)
 {
   int ret = 0;

@@ -3,6 +3,23 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+#define NONCE 12345
+
+void printHex(unsigned char *c, int n)
+{
+	int i;
+	for (i = 0; i < n; i++) {
+		printf("0x%02X, ", c[i]);
+		if ((i%4) == 3)
+		    printf(" ");
+
+		if ((i%16) == 15)
+		    printf("\n");
+	}
+	if ((i%16) != 0)
+		printf("\n");
+}
+
 struct args
 {
   void* in;
@@ -31,6 +48,11 @@ void* create_enclave(void* args0)
   }
   else
   {
+    
+    printf("host:%d: enclave attest\n", i);
+    PLenclave_attest(enclave, NONCE);
+    printHex((unsigned char*)(enclave->attest_param.report.enclave.signature), 64);
+
     printf("host:%d: enclave run\n", i);
     PLenclave_run(enclave);
     pthread_exit((void*)0);
