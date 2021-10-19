@@ -18,10 +18,18 @@ SECTIONS
   .debug : { *(.debug) }
 
   . = ALIGN(0x1000);
+  .brk_area :
+  {
+    __brk_start0 = .;
+    . = . + 4096 * 64;
+    __brk_end = .;
+  }
+
+  . = ALIGN(0x1000);
   .mmap_area :
   {
     __mmap_start0 = .;
-    . = . + 4096 * 256;
+    . = . + 4096 * 64;
     __mmap_end = .;
   }
   _end = .;

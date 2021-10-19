@@ -1,7 +1,9 @@
 #define __SYSCALL_LL_E(x) (x)
 #define __SYSCALL_LL_O(x) (x)
 #define UNTRUSTED_MEM_PTR 0x0000001000000000
+#define DEFAULT_BRK_SIZE 4096 * 256
 #define DEFAULT_MMAP_SIZE 4096 * 8192
+extern char __brk_start0;
 extern char __mmap_start0;
 
 #define __asm_syscall(...) \
@@ -37,13 +39,13 @@ static inline long __syscall1(long n, long a)
       if(a0 == 0)
       {
           // __asm_syscall("r"(a7), "0"(a0))
-        return (unsigned long)((&__mmap_start0) + brk_offset); 
+        return (unsigned long)((&__brk_start0) + brk_offset);
       }
       else
       {
         unsigned long retval = a0;
-        brk_offset = a0 - (unsigned long)&__mmap_start0;
-        if(brk_offset >= 2 * DEFAULT_MMAP_SIZE)
+        brk_offset = a0 - (unsigned long)&__brk_start0;
+        if(brk_offset >= 2 * DEFAULT_BRK_SIZE)
           return -1;
         // __asm_syscall("r"(a7), "0"(a0))
         return retval;
@@ -120,8 +122,8 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
   struct mmap_metadata* tmp;
   unsigned long ret;
   unsigned long __mmap_size0 = 0;
-  unsigned long real_mmap_start0 = ((unsigned long)&__mmap_start0) + 4096 * 128;// reserved for the initial small chunk array
-  unsigned long real_default_mmap_size = DEFAULT_MMAP_SIZE - 4096 * 128;
+  unsigned long real_mmap_start0 = (unsigned long)&__mmap_start0;
+  unsigned long real_default_mmap_size = DEFAULT_MMAP_SIZE;
   switch(n)
   {
     case SYS_mmap:
