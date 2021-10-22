@@ -130,6 +130,13 @@ $(CRT_OBJS): CFLAGS_ALL += -DCRT
 
 $(LOBJS) $(LDSO_OBJS): CFLAGS_ALL += -fPIC
 
+ifdef CUSTOM_MMAP_SIZE
+	CFLAGS_ALL += -DCUSTOM_MMAP_SIZE=$(CUSTOM_MMAP_SIZE)
+endif
+ifdef CUSTOM_BRK_SIZE
+	CFLAGS_ALL += -DCUSTOM_BRK_SIZE=$(CUSTOM_BRK_SIZE)
+endif
+
 CC_CMD = $(CC) $(CFLAGS_ALL) -c -o $@ $<
 
 # Choose invocation of assembler to be used
