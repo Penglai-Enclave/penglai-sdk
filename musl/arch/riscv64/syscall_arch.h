@@ -1,10 +1,22 @@
 #define __SYSCALL_LL_E(x) (x)
 #define __SYSCALL_LL_O(x) (x)
 #define UNTRUSTED_MEM_PTR 0x0000001000000000
-#define DEFAULT_BRK_SIZE 4096 * 256
-#define DEFAULT_MMAP_SIZE 4096 * 8192
+#define DEFAULT_BRK_SIZE 4096 * 32
+#define DEFAULT_MMAP_SIZE 4096 * 64
 extern char __brk_start0;
 extern char __mmap_start0;
+
+#ifdef CUSTOM_BRK_SIZE
+static unsigned long brk_size = CUSTOM_BRK_SIZE;
+#else
+static unsigned long brk_size = DEFAULT_BRK_SIZE;
+#endif
+
+#ifdef CUSTOM_MMAP_SIZE
+static unsigned long mmap_size = CUSTOM_MMAP_SIZE;
+#else
+static unsigned long mmap_size = DEFAULT_MMAP_SIZE;
+#endif
 
 #define __asm_syscall(...) \
 	__asm__ __volatile__ ("ecall\n\t" \
@@ -45,7 +57,7 @@ static inline long __syscall1(long n, long a)
       {
         unsigned long retval = a0;
         brk_offset = a0 - (unsigned long)&__brk_start0;
-        if(brk_offset >= 2 * DEFAULT_BRK_SIZE)
+        if(brk_offset >= 2 * brk_size)
           return -1;
         // __asm_syscall("r"(a7), "0"(a0))
         return retval;
@@ -128,7 +140,7 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
       tmp =(struct mmap_metadata*)((unsigned long)&__mmap_start0 + __mmap_size0);
       while(tmp)
       {
-        if((unsigned long)tmp < (unsigned long)&__mmap_start0 + DEFAULT_MMAP_SIZE)
+        if((unsigned long)tmp < (unsigned long)&__mmap_start0 + mmap_size)
         {
           if((tmp->type == 0) || ((tmp->type == 1) && (tmp->size >= a1 + sizeof(struct mmap_metadata)) ) )
           {
@@ -139,7 +151,7 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
             ret = (unsigned long)&__mmap_start0 + __mmap_size0 + sizeof(struct mmap_metadata); 
             __mmap_size0 += sizeof(struct mmap_metadata) + a1;
             tmp =(struct mmap_metadata*)((unsigned long)&__mmap_start0 + __mmap_size0);
-            if((unsigned long)tmp >= (unsigned long)&__mmap_start0 + DEFAULT_MMAP_SIZE)
+            if((unsigned long)tmp >= (unsigned long)&__mmap_start0 + mmap_size)
             {
               ret -= sizeof(struct mmap_metadata);
               ((struct mmap_metadata*)ret)->type = tmp_type;
