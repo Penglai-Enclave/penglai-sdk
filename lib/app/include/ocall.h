@@ -13,3 +13,4 @@
 #define ENCLAVE_DEFAULT_KBUFFER         0xffffffe000000000UL
 
 #define OCALL_SYS_WRITE     3
+#define OCALL_USER_DEFINED	4

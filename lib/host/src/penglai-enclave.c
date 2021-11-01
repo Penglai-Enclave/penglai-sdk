@@ -33,6 +33,8 @@ int PLenclave_create(struct PLenclave* PLenclave, struct elf_args* u_elffile, st
   PLenclave->user_param.stack_size = u_param->stack_size;
   PLenclave->user_param.untrusted_mem_ptr = u_param->untrusted_mem_ptr;
   PLenclave->user_param.untrusted_mem_size = u_param->untrusted_mem_size;
+  PLenclave->user_param.ocall_buf_size = 0;
+  PLenclave->user_param.resume_type = 0;
   if(PLenclave->user_param.elf_ptr == 0 || PLenclave->user_param.elf_size <= 0)
   {
     fprintf(stderr, "LIB: ioctl create enclave: elf_ptr is NULL\n");
@@ -61,7 +63,7 @@ int PLenclave_run(struct PLenclave *PLenclave)
     return -1;
   }
 
-  return 0;
+  return ret;
 }
 
 int PLenclave_stop(struct PLenclave *PLenclave)
@@ -102,7 +104,7 @@ int PLenclave_resume(struct PLenclave *PLenclave)
     fprintf(stderr, "LIB: ioctl resume enclave is failed \n");
     return -1;
   }
-  return 0;
+  return ret;
 }
 
 int PLenclave_destroy(struct PLenclave *PLenclave)
