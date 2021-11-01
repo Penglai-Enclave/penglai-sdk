@@ -32,6 +32,8 @@
 #define DEFAULT_UNTRUSTED_PTR   0x0000001000000000
 #define DEFAULT_UNTRUSTED_SIZE  8192 // 8 KB
 
+#define USER_PARAM_RESUME_FROM_CUSTOM_OCALL  1000
+
 #define PRIVATE_KEY_SIZE       32
 #define PUBLIC_KEY_SIZE        64
 #define HASH_SIZE              32
@@ -73,6 +75,8 @@ struct penglai_enclave_user_param
   long stack_size;
   unsigned long untrusted_mem_ptr;
   long untrusted_mem_size;
+  long ocall_buf_size;
+  int resume_type;
 };
 
 struct penglai_enclave_attest_param

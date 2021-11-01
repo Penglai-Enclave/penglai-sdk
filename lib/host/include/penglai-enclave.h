@@ -11,6 +11,9 @@
 
 #define PENGLAI_ENCLAVE_DEV_PATH "/dev/penglai_enclave_dev"
 
+#define RETURN_USER_EXIT_ENCL   0
+#define RETURN_USER_FOR_OCALL   1
+
 struct PLenclave
 {
   struct elf_args *elffile;
