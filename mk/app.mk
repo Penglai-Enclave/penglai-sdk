@@ -44,4 +44,4 @@ $(O)/$(APP): $(objs) $(SDK_LIB)
 
 clean:
 	@echo '  CLEAN    .'
-	$(q)rm -f $(O)/$(APP) $(objs)
+	$(q)rm -f $(O)/$(APP) $(objs) $(objs:.o=.d)
