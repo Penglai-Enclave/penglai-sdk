@@ -10,7 +10,7 @@ include $(PENGLAI_SDK)/mk/compile.mk
 SDK_LIB_DIR := $(PENGLAI_SDK)/lib
 SDK_INC_DIR := $(PENGLAI_SDK)/include
 
-SDK_LIB := $(wildcard $(SDK_LIB_DIR)/*.a)
+SDK_LIB := $(addprefix $(SDK_LIB_DIR)/, libpenglai-enclave-eapp.a libc.a)
 
 GCC_LIB := $(shell $(CC_encl) --print-libgcc-file-name)
 
@@ -20,8 +20,6 @@ CFLAGS += \
 	-I$(SDK_INC_DIR)/c/include \
 	-I$(SDK_INC_DIR)/c/obj/include \
 	-I$(SDK_INC_DIR)/c/arch/riscv64
-
-LDFLAGS := -nostdlib $(DEFAULT_LDFLAGS) -Wl,--start-group $(LDFLAGS) -lpenglai-enclave-eapp -lc $(GCC_LIB) -Wl,--end-group
 
 APP_LDS ?= $(PENGLAI_SDK)/mk/app.lds
 
@@ -40,7 +38,7 @@ $(foreach f, $(APP_A_SRCS),\
 $(O)/$(APP): $(objs) $(SDK_LIB)
 	@echo '  LD    $(notdir $@)'
 	$(q)mkdir -p $(dir $@)
-	$(q)$(CC_encl) -T $(APP_LDS) -o $@ $^ -static -L$(SDK_LIB_DIR) $(LDFLAGS)
+	$(q)$(CC_encl) -T $(APP_LDS) -static -nostdlib $(DEFAULT_LDFLAGS) -o $@ -Wl,--start-group $^ $(LDFLAGS) $(GCC_LIB) -Wl,--end-group
 
 clean:
 	@echo '  CLEAN    .'
