@@ -30,7 +30,7 @@ PREBUILD_LIBS := musl
 
 # Define build scripts in SDK_BUILD_SCRIPTS that are
 # required in the generated SDK
-SDK_BUILD_SCRIPTS := mk/app.mk mk/compile.mk mk/app.lds
+SDK_BUILD_SCRIPTS := mk/app.mk mk/host_app.mk mk/compile.mk mk/app.lds
 
 .PHONY: all prebuild build install clean
 
