@@ -12,7 +12,7 @@ SDK_INC_DIR := $(PENGLAI_SDK)/include
 
 SDK_LIB := $(addprefix $(SDK_LIB_DIR)/, libpenglai-enclave-eapp.a libc.a)
 
-GCC_LIB := $(shell $(CC_encl) --print-libgcc-file-name)
+GCC_LIB := $(shell $(CC_encl) -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI) --print-libgcc-file-name)
 
 CFLAGS += \
 	-nostdinc \
