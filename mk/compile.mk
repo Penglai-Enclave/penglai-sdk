@@ -27,7 +27,7 @@ $(6) += $$(obj)
 -include $$(dep)
 
 $$(obj): $(call get_file_path,$(1),$(3))
-	@echo '  COMPILE       $$(notdir $$@)'
+	@echo '  CC    $$(notdir $$@)'
 	$(q)mkdir -p $$(dir $$@)
 	$(q)$(CC_$(sm)) $(2) -c $$< -o $$@
 endef
