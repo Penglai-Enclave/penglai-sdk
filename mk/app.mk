@@ -15,12 +15,13 @@ SDK_LIB := $(wildcard $(SDK_LIB_DIR)/*.a)
 GCC_LIB := $(shell $(CC_encl) --print-libgcc-file-name)
 
 CFLAGS += \
+	-nostdinc \
 	-I$(SDK_INC_DIR)/penglai-enclave-eapp/include \
 	-I$(SDK_INC_DIR)/c/include \
 	-I$(SDK_INC_DIR)/c/obj/include \
 	-I$(SDK_INC_DIR)/c/arch/riscv64
 
-LDFLAGS := $(DEFAULT_LDFLAGS) -Wl,--start-group $(LDFLAGS) -lpenglai-enclave-eapp -lc $(GCC_LIB) -Wl,--end-group
+LDFLAGS := -nostdlib $(DEFAULT_LDFLAGS) -Wl,--start-group $(LDFLAGS) -lpenglai-enclave-eapp -lc $(GCC_LIB) -Wl,--end-group
 
 APP_LDS ?= $(PENGLAI_SDK)/mk/app.lds
 
