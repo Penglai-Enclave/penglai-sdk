@@ -1,7 +1,7 @@
 CC = riscv64-unknown-linux-gnu-gcc
 INCLUDE_DIR = include/
 SRC_DIR = src
-CCFLAGS = -Wall -Werror -I $(INCLUDE_DIR)
+CCFLAGS = -Wall -Werror -shared -fPIC -I $(INCLUDE_DIR)
 SRCS = param.c penglai-enclave.c elf.c
 OBJS = $(patsubst %.c,%.o,$(SRCS))
 AR = riscv64-unknown-elf-ar
