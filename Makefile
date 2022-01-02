@@ -18,9 +18,11 @@ RISCV_ABI ?= lp64
 # be placed under OUT_DIR
 OUT_DIR ?= $(SDK_DIR)/build
 
+PENGLAI_SDK ?= $(OUT_DIR)/output
+
 # All generated SDK files will
 # be placed under INSTALL_DIR
-INSTALL_DIR ?= $(OUT_DIR)/output
+INSTALL_DIR := $(PENGLAI_SDK)
 
 # define CROSS_COMPILE toolchains and HOST toolchains
 include mk/compile.mk
@@ -32,7 +34,7 @@ PREBUILD_LIBS := musl
 # required in the generated SDK
 SDK_BUILD_SCRIPTS := mk/app.mk mk/host_app.mk mk/compile.mk mk/app.lds
 
-.PHONY: all prebuild build install clean
+.PHONY: all prebuild build install demo clean
 
 all: build
 
@@ -74,6 +76,9 @@ prebuild: $(PREBUILD_TARGETS)
 build: $(TARGET_LIBS)
 
 install: $(INSTALL_LIBS) $(INSTALL_HEADERS) $(INSTALL_BUILD_SCRIPTS)
+
+demo: install
+	$(q)make PENGLAI_SDK=$(PENGLAI_SDK) -C demo
 
 clean:
 	@echo '  CLEAN   .'
