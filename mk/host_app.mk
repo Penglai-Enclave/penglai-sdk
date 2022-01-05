@@ -30,7 +30,7 @@ $(foreach f, $(APP_A_SRCS),\
 $(O)/$(APP): $(objs) $(SDK_LIB)
 	@echo '  LD    $(notdir $@)'
 	$(q)mkdir -p $(dir $@)
-	$(q)$(CC_host) -o $@ $(DEFAULT_LDFLAGS) -Wl,--start-group $^ $(LDFLAGS) -Wl,--end-group
+	$(q)$(CC_host) -static -o $@ $(DEFAULT_LDFLAGS) -Wl,--start-group $^ $(LDFLAGS) -Wl,--end-group
 
 clean:
 	@echo '  CLEAN    .'
