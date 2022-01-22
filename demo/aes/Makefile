@@ -1,4 +1,4 @@
-APP = aes
-APP_C_SRCS = aes.c
-EXTRA_CLEAN = $(APP).dump
-include $(PENGLAI_SDK)/app.mk
+APP := aes
+APP_C_SRCS := aes.c
+
+include $(PENGLAI_SDK)/mk/app.mk

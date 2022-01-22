@@ -1,4 +1,10 @@
 tags
+
+*.d
 *.o
 *.dump
+*.swp
+
 source.sh
+
+build

@@ -1,4 +1,4 @@
-APP = prime
-APP_C_SRCS = prime.c
-EXTRA_CLEAN = $(APP).dump
-include $(PENGLAI_SDK)/app.mk
+APP := prime
+APP_C_SRCS := prime.c
+
+include $(PENGLAI_SDK)/mk/app.mk

@@ -1,9 +1,7 @@
-CC=riscv64-unknown-linux-gnu-gcc
+APP := host
+APP_C_SRCS := host.c
 
-HOST=host
+CFLAGS := -static -pthread
+LDFLAGS := -lpthread
 
-all:
-	$(CC) -o $(HOST) -static -I $(PENGLAI_SDK)/lib/host/include/  host.c  $(PENGLAI_SDK)/lib/libpenglai-enclave-host.a  -lpthread
-
-clean:
-	rm -f *.o $(HOST)
+include $(PENGLAI_SDK)/mk/host_app.mk

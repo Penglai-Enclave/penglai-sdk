@@ -230,7 +230,6 @@ printf "checking for C compiler... "
 trycc ${CROSS_COMPILE}gcc
 trycc ${CROSS_COMPILE}c99
 trycc ${CROSS_COMPILE}cc
-echo $(CROSS_COMPILE)
 printf "%s\n" "$CC"
 test -n "$CC" || { echo "$0: cannot find a C compiler" ; exit 1 ; }
 
