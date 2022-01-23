@@ -12,7 +12,6 @@
 **************************************************************************/
 
 #include <string.h>
-#include <stdio.h>
 
 #include "SM4_Enc.h"
 #include "SM4.h"
@@ -44,10 +43,7 @@ int SM4_CBC_Encrypt(const unsigned char *Key, const unsigned char *IV,
     int output_cursor = 0;
 
     if (CipherTextLen < CBC_CipherText_Len(PlainTextLen))
-    {
-        printf("[ERROR] Ciphertext buffer size is too small\n");
         return 0;
-    };
 
     rounds = CBC_CipherText_Len(PlainTextLen) / 16;
     for (int j = 0; j < rounds; ++j)
@@ -99,10 +95,7 @@ int SM4_CBC_Decrypt(const unsigned char *Key, const unsigned char *IV,
     int output_cursor = 0;
 
     if (CipherTextLen % 16 != 0)
-    {
-        printf("[ERROR] The length of ciphertext isn't a multiple of the block size.\n");
         return 0;
-    };
 
     rounds = CipherTextLen / 16;
     for (int j = 0; j < rounds; j++)

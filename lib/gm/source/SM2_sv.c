@@ -32,11 +32,9 @@
 #include "miracl.h"
 #include "SM2_sv.h"
 #include "SM3.h"
+#include "Random.h"
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <time.h>
 
 #define MAX_MESSAGE_SIZE 1024
 
@@ -71,15 +69,14 @@ char g_mem_point[MR_ECP_RESERVE(2)];
 
 static void MIRACL_Init()
 {
-#ifdef PENGLAI_DEBUG
-	miracl *mip = mirsys(128, 16);
-	printf("MIRACL: pack: %d, nib: %d, big size: %ld, point size: %ld, workspace ptr: %lx\n",
-			mip->pack, mip->nib, mr_size(mip->nib-1),
-			mr_esize(mr_mip->nib-1), (unsigned long)mip->workspace);
-#else
-	mirsys(128, 16);
-#endif
-	irand((unsigned int)time(NULL));
+	unsigned int seed = 0;
+    mirsys(128, 16);
+    /*
+     * Note: Please use penglai_set_rand_seed() first to get a
+     * real-random number as 'seed'.
+     */
+    penglai_read_rand((unsigned char *)&seed, sizeof(unsigned int));
+    irand((unsigned int)seed);
 }
 
 /****************************************************************
@@ -677,22 +674,18 @@ int SM2_SelfCheck()
 	int len = strlen((const char *)message); //the length of message
 
 	temp = SM2_Init();
-	printf(" - - - - SM2_init finished ret %d - - - - \n", temp);
 	if (temp)
 		return temp;
 
 	temp = SM2_KeyGeneration(dA, xA, yA);
-	printf(" - - - - KeyGeneration finished ret %d - - - - \n", temp);
 	if (temp)
 		return temp;
 
 	temp = SM2_Sign(message, len, dA, r, s);
-	printf(" - - - - SM2_sign finished ret %d - - - - \n", temp);
 	if (temp)
 		return temp;
 
 	temp = SM2_Verify(message, len, xA, yA, r, s);
-	printf(" - - - - SM2_Verify finished ret %d - - - - \n", temp);
 	if (temp)
 		return temp;
 

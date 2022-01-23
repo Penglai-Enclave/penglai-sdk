@@ -31,8 +31,6 @@
 
 #pragma once
 
-#include "miracl.h"
-
 #define SM2_WORDSIZE 8
 #define SM2_NUMBITS  256
 #define SM2_NUMWORD  (SM2_NUMBITS / SM2_WORDSIZE)
