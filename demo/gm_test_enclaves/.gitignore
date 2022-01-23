@@ -1,0 +1,5 @@
+test_sm2
+test_random
+test_sm4_cbc
+test_sm4_ocb
+*.o
