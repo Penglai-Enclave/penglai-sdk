@@ -7,6 +7,7 @@ all:
 	make -C deadloop
 	make -C count
 	make -C gm_test_enclaves
+	make -C seal_data
 
 clean:
 	make -C host clean
@@ -17,3 +18,4 @@ clean:
 	make -C deadloop clean
 	make -C count clean
 	make -C gm_test_enclaves clean
+	make -C seal_data clean
