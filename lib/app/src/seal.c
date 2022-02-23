@@ -6,14 +6,14 @@
 #include <string.h>
 #include <stddef.h>
 
-extern unsigned long EAPP_OCALL(unsigned long ocall_func_id, uintptr_t arg0, uintptr_t arg1, uintptr_t arg2, uintptr_t arg3);
+extern unsigned long EAPP_GET_KEY(uintptr_t salt_ptr, uintptr_t salt_len, uintptr_t key_buf_ptr, uintptr_t key_buf_len);
 
 int DeriveSealingKey(const uint8_t *salt, int salt_len, uint8_t *seal_key_buf, int seal_key_len){
     int ret;
     
-    ret = EAPP_OCALL(OCALL_DERIVE_SEAL_KEY, (uintptr_t)salt, salt_len, (uintptr_t)seal_key_buf, seal_key_len);
+    ret = EAPP_GET_KEY((uintptr_t)salt, salt_len, (uintptr_t)seal_key_buf, seal_key_len);
     if(ret != 0){
-        eapp_print("Ocall: OCALL_DERIVE_SEAL_KEY failed\n");
+        eapp_print("[SDK] function DeriveSealingKey: EAPP_GET_KEY failed\n");
     }
     return ret;
 }
