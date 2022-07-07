@@ -1,0 +1,4 @@
+serverless-user
+*.dump
+*.o
+*.S

@@ -37,13 +37,10 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "eapp.h"
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
-#include <assert.h>
-
+#include <stdlib.h>
+#include <time.h>
 
 typedef unsigned char u8;
 typedef unsigned int u32;
@@ -62,7 +59,6 @@ extern const u32 rcon[10];
 extern const u8 Td4s[256];
 extern const u8 rcons[10];
 
-#define OCALL_PRINT_STRING 1
 #define TE0(i) Te0[((i) >> 24) & 0xff]
 #define TE1(i) Te1[((i) >> 16) & 0xff]
 #define TE2(i) Te2[((i) >> 8) & 0xff]
@@ -1096,17 +1092,15 @@ void aes_encrypt_deinit(void *ctx)
 
 
 /* main */
-/*unsigned long ocall_print_string(char* string){
-  unsigned long retval;
-  ocall(OCALL_PRINT_STRING, string, strlen(string)+1, &retval ,sizeof(unsigned long));
-  return retval;
-}*/
 
-
-int aes()
+int main()
 {
 	static const u8 key[16] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
-	static const size_t DATA_SIZE = 16;
+	static const size_t DATA_SIZE = 32 * 1024 * 1024;
+
+	clock_t start, finish;
+
+	start = clock();
 
 	u8 *pt1 = malloc(DATA_SIZE);
 	u8 *ct = malloc(DATA_SIZE);
@@ -1133,17 +1127,14 @@ int aes()
 	aes_decrypt_deinit(rk2);
 
 	/* compare */
-	// printf("%d\n", memcmp(pt1, pt2, DATA_SIZE));
-  	//ocall_print_string("OCALL SUCCESSFUL");
+	printf("%d\n", memcmp(pt1, pt2, DATA_SIZE));
+
 	free(pt1);
 	free(ct);
 	free(pt2);
-    EAPP_RETURN(0);
-}
 
-int EAPP_ENTRY main(){
-  unsigned long * args;
-  EAPP_RESERVE_REG;
-  aes(args);
-}
+	finish = clock();
+	printf("Total costs %f ms\n", (float)(finish- start) / (CLOCKS_PER_SEC/1000));
 
+	return 0;
+}

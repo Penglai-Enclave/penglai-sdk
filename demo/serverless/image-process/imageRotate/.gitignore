@@ -1,0 +1,4 @@
+imageRotate
+*.dump
+*.o
+*.S

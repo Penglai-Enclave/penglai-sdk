@@ -1,0 +1,4 @@
+imageResize
+*.dump
+*.o
+*.S
