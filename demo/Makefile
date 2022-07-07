@@ -8,6 +8,8 @@ all:
 	make -C deadloop
 	make -C count
 	make -C rv8-bench
+	make -C rv8-bench-host
+
 clean:
 	make -C host clean
 	make -C prime clean
@@ -18,3 +20,4 @@ clean:
 	make -C count clean
 	make -C rv8-bench clean
 	make -C helloworld clean
+	make -C rv8-bench-host clean
