@@ -9,6 +9,10 @@ all:
 	make -C count
 	make -C rv8-bench
 	make -C rv8-bench-host
+	make -C rv8-bench-runtime
+	make -C aes-runtime
+	make -C prime-runtime
+	make -C host-max-domain 
 
 clean:
 	make -C host clean
@@ -21,3 +25,7 @@ clean:
 	make -C rv8-bench clean
 	make -C helloworld clean
 	make -C rv8-bench-host clean
+	make -C rv8-bench-runtime clean
+	make -C aes-runtime clean
+	make -C prime-runtime clean
+	make -C host-max-domain clean
