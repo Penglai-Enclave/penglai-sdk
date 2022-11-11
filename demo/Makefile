@@ -6,6 +6,8 @@ all:
 	make -C crypt
 	make -C deadloop
 	make -C count
+	make -C gm_test_enclaves
+
 clean:
 	make -C host clean
 	make -C prime clean
@@ -14,3 +16,4 @@ clean:
 	make -C crypt clean
 	make -C deadloop clean
 	make -C count clean
+	make -C gm_test_enclaves clean
