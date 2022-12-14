@@ -33,6 +33,7 @@ int PLenclave_create(struct PLenclave* PLenclave, struct elf_args* u_elffile, st
   PLenclave->user_param.stack_size = u_param->stack_size;
   PLenclave->user_param.untrusted_mem_ptr = u_param->untrusted_mem_ptr;
   PLenclave->user_param.untrusted_mem_size = u_param->untrusted_mem_size;
+  PLenclave->user_param.privilege = u_param->privilege;
   PLenclave->user_param.ocall_buf_size = 0;
   PLenclave->user_param.resume_type = 0;
   if(PLenclave->user_param.elf_ptr == 0 || PLenclave->user_param.elf_size <= 0)

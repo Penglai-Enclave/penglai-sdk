@@ -6,7 +6,8 @@ void enclave_param_init(struct enclave_args* enclave_args)
 {
   enclave_args->stack_size = DEFAULT_STACK_SIZE;
   enclave_args->untrusted_mem_ptr = DEFAULT_UNTRUSTED_PTR;
-  enclave_args->untrusted_mem_size=DEFAULT_UNTRUSTED_SIZE;
+  enclave_args->untrusted_mem_size = DEFAULT_UNTRUSTED_SIZE;
+  enclave_args->privilege = DEFAULT_PRIVILEGE;
 }
 
 void enclave_param_destroy(struct enclave_args* enclave_args)

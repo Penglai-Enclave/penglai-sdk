@@ -27,10 +27,13 @@
 #define PENGLAI_ENCLAVE_IOC_DEBUG_PRINT \
   _IOW(PENGLAI_ENCLAVE_IOC_MAGIC, 0x06, struct penglai_enclave_user_param)
 
+#define PRIVILEGE_U_MODE        0
+#define PRIVILEGE_S_MODE        1
 
 #define DEFAULT_STACK_SIZE      1024*1024 // 1 MB
 #define DEFAULT_UNTRUSTED_PTR   0x0000001000000000
 #define DEFAULT_UNTRUSTED_SIZE  8192 // 8 KB
+#define DEFAULT_PRIVILEGE       PRIVILEGE_U_MODE
 
 #define USER_PARAM_RESUME_FROM_CUSTOM_OCALL  1000
 
@@ -77,6 +80,7 @@ struct penglai_enclave_user_param
   long untrusted_mem_size;
   long ocall_buf_size;
   int resume_type;
+  int privilege;
 };
 
 struct penglai_enclave_attest_param
@@ -91,6 +95,7 @@ struct enclave_args
   unsigned long stack_size;
   unsigned long untrusted_mem_ptr;
   unsigned long untrusted_mem_size;
+  int privilege;
 };
 
 void enclave_param_init(struct enclave_args* enclave_args);
