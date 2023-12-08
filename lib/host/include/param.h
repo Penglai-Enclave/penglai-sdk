@@ -10,6 +10,10 @@
 #include <pthread.h>
 #include <string.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define PENGLAI_ENCLAVE_IOC_MAGIC  0xa4
 
 #define PENGLAI_ENCLAVE_IOC_CREATE_ENCLAVE \
@@ -98,5 +102,9 @@ void enclave_param_destroy(struct enclave_args* enclave_args);
 void* alloc_untrusted_mem(struct enclave_args* enclave_args,unsigned long size);
 
 typedef unsigned char byte;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
