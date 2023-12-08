@@ -14,3 +14,4 @@
 
 #define OCALL_SYS_WRITE     3
 #define OCALL_USER_DEFINED	9
+#define OCALL_DERIVE_SEAL_KEY   10

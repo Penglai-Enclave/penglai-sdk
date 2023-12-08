@@ -1,0 +1,4 @@
+seal_data
+*.dump
+*.o
+*.S
