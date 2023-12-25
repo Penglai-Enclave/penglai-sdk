@@ -9,6 +9,10 @@
 #include <sys/types.h>
 #include <stdarg.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define PENGLAI_ENCLAVE_DEV_PATH "/dev/penglai_enclave_dev"
 
 #define RETURN_USER_EXIT_ENCL   0
@@ -33,6 +37,8 @@ int PLenclave_destroy(struct PLenclave *PLenclave);
 int PLenclave_attest(struct PLenclave *PLenclave, uintptr_t nonce);
 int PLenclave_debug_print(struct PLenclave *PLenclave);
 
-
+#ifdef __cplusplus
+}
+#endif
 
 #endif
