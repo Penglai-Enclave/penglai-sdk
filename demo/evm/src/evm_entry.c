@@ -30,7 +30,6 @@ int EAPP_ENTRY main(){
   uint8_t evm_value[32];
   memset(evm_value, 0, sizeof(evm_value));
   memcpy(&evm_value, evm_shared_param.value, sizeof(evm_shared_param.value));
-  eapp_print("EAPP_ENTRY main(): evm_shared_param.code_size = %d\n", evm_shared_param.code_size);
 
   uint8_t evm_output[200];
   memset(evm_output, 0, sizeof(evm_output));

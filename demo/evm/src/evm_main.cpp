@@ -43,7 +43,6 @@ int evm_main(uint8_t* evm_code, uint64_t evm_code_size,
     }
     *evm_log_size = result->log.size();
     *evm_last_gas = result->evm_last_gas;
-    eapp_print("evm_log_size = %d\n", (int)result->log.size());
 
     return 0;
 }
