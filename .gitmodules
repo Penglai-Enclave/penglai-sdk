@@ -1,4 +1,4 @@
 [submodule "secGear"]
 	path = secGear
-	url = https://gitee.com/nicolas-cage/secGear.git
+	url = https://github.com/Penglai-Enclave/Penglai-secGear.git
 	branch = riscv-penglai-zx-dev
