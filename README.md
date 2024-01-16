@@ -40,6 +40,14 @@ Now, you can re-execute `PENGLAI_SDK=$(pwd) make -j8` command. If everything is 
 
 Congratulations! You have successfully built and run a demo written by yourself on Penglai.
 
+## Quickly build your own demo with secGear
+
+SecGear is a confidential computing security application development kit for the computing industry, which aims to provide a unified development framework for developers on different hardware devices. Currently, RISCV-V penglai TEE is supported.
+
+You can refer to the following documentation to get started with secGear for Penglai enclave.
+
+[secGear for RISC-V TEE](https://github.com/Penglai-Enclave/Penglai-secGear/blob/riscv-penglai-zx-dev/docs/riscv_tee.md#secgear-for-risc-v-tee)
+
 ## Licenses
 
 Mulan Permissive Software License，Version 1 (Mulan PSL v1)
