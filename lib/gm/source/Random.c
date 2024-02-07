@@ -21,8 +21,8 @@ static BOOL set_seed = FALSE;
  * After locating the wrong code and doing objdump on elf file, I still
  * have no idea with why these two global variable can help with it.
  */
-char g_mem[MR_BIG_RESERVE(6)];
-char g_mem_point[MR_ECP_RESERVE(2)];
+// char g_mem[MR_BIG_RESERVE(6)];
+// char g_mem_point[MR_ECP_RESERVE(2)];
 
 /*
  * User must set a real random as random number seed, otherwise
