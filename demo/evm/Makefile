@@ -1,12 +1,14 @@
 ISA ?= rv64imafdc
 ABI ?= lp64d
 CFLAGS := -mabi=$(ABI) -march=$(ISA)
-CXXFLAGS := $(CFLAGS) --std=c++11 $(EXTRA_CXXFLAGS)
+CXXFLAGS := $(CFLAGS)  $(EXTRA_CXXFLAGS)
 CXXFLAGS += -DTFLITE_WITHOUT_XNNPACK
-
-CXX := riscv64-unknown-linux-gnu-g++
-CC := riscv64-unknown-linux-gnu-gcc
-LINK = riscv64-unknown-linux-gnu-ld
+# LDFLAGS := --allow-multiple-definition
+# For now, compile the evm using the legacy compilation chain
+TOOLCHAINPATH := /home/penglai/toolchain-720/bin
+CXX := $(TOOLCHAINPATH)/riscv64-unknown-linux-gnu-g++
+CC := $(TOOLCHAINPATH)/riscv64-unknown-linux-gnu-gcc
+LINK = $(TOOLCHAINPATH)/riscv64-unknown-linux-gnu-ld
 
 LIBS := \
 -lstdc++ \
