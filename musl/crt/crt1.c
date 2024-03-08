@@ -13,7 +13,7 @@ int __libc_start_main(int (*)(), int, char **,
 
 void _start_c(long *p)
 {
-	int argc = p[0];
-	char **argv = (void *)(p+1);
-	__libc_start_main(main, argc, argv, _init, _fini, 0);
+    int argc = 1;
+    char *argv[] = {0, 0, 0, 0};
+    __libc_start_main(main, argc, argv, _init, _fini, 0);
 }
