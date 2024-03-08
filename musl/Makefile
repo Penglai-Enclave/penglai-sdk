@@ -136,6 +136,9 @@ endif
 ifdef CUSTOM_BRK_SIZE
 	CFLAGS_ALL += -DCUSTOM_BRK_SIZE=$(CUSTOM_BRK_SIZE)
 endif
+ifdef USE_TLSF
+        CFLAGS_ALL += -DUSE_TLSF=1
+endif
 
 CC_CMD = $(CC) $(CFLAGS_ALL) -c -o $@ $<
 

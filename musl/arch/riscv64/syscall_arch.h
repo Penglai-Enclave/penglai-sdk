@@ -5,6 +5,14 @@
 #define DEFAULT_MMAP_SIZE 4096 * 64
 extern char __brk_start0;
 extern char __mmap_start0;
+#ifdef USE_TLSF
+#include "tlsf.h"
+extern int g_mem_pool_inited;
+extern tlsf_t g_tlsf_pool;
+extern char __mmap_end;
+#define MMAP_START ((char *)&__mmap_start0)
+#define TOTAL_MMAP_SIZE ((char *)&__mmap_end - (char *)&__mmap_start0)
+#endif
 
 #ifdef CUSTOM_BRK_SIZE
 static unsigned long brk_size = CUSTOM_BRK_SIZE;
@@ -75,9 +83,13 @@ static inline long __syscall2(long n, long a, long b)
   {
     case SYS_munmap:
       {
+#ifdef USE_TLSF
+        tlsf_free(g_tlsf_pool, (void *)a0);
+#else
         struct mmap_metadata* tmp;
         tmp = (struct mmap_metadata* )(a - sizeof(struct mmap_metadata));
         tmp->type = 1;
+#endif
         return 0;
       }
   }
@@ -137,6 +149,13 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
   switch(n)
   {
     case SYS_mmap:
+#ifdef USE_TLSF
+        if (!g_mem_pool_inited) {
+            g_tlsf_pool = tlsf_create_with_pool(MMAP_START, TOTAL_MMAP_SIZE);
+            g_mem_pool_inited = 1;
+        }
+        return (long)tlsf_malloc(g_tlsf_pool, a1);
+#else
       tmp =(struct mmap_metadata*)((unsigned long)&__mmap_start0 + __mmap_size0);
       while(tmp)
       {
@@ -185,6 +204,7 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
         }
       }
       break;
+#endif
   }
 	__asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2), "r"(a3), "r"(a4), "r"(a5))
 }
