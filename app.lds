@@ -13,8 +13,10 @@ SECTIONS
     *(.rdata)
     *(.rodata)
   }
-  .data : { *(.data) }
-  .bss : { *(.bss) }
+  .data : { 
+	*(.data) 
+	*(.bss)
+  }
   .debug : { *(.debug) }
 
   . = ALIGN(0x1000);
