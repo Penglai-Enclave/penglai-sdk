@@ -15,20 +15,16 @@ SM2_SRC = $(addprefix source/, $(SM2))
 SM2_OBJ = $(patsubst %.c,%.o, $(SM2_SRC))
 SM2_CFLAGS = -c -I include -I include/miracl
 
-ALL: miracl.a sm2.a
+TARGET = ../libpenglai-enclave-gm.a
 
-miracl.a: $(MIRARL_OBJ)
-	$(AR) crv $@ $^
+all: $(TARGET)
 
 $(MIRARL_OBJ): %.o: %.c
 	$(CC) $(MIR_CFLAGS) -o $@ $<
-
-sm2.a: $(SM2_OBJ)
-	$(AR) crv $@ $^
-
 $(SM2_OBJ): %.o: %.c
 	$(CC) $(SM2_CFLAGS) -o $@ $<
+$(TARGET): $(MIRARL_OBJ) $(SM2_OBJ)
+	$(AR) crv $@ $^
 
 clean:
-	-rm -f *.o *.a
-	-rm -f source/miracl/*.o source/*.o
+	-rm -f $(MIRARL_OBJ) $(SM2_OBJ) $(TARGET)
