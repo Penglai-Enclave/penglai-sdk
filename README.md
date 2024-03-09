@@ -9,6 +9,10 @@ This repo contains SDK to write host-side applications and enclave-apps, as well
 
 ## Quick Start
 
+To compile the sdk in openEuler, run the script `./replace_compiler_prefix.sh` in the `./sdk` directory
+
+If you are using the `riscv64-unknown-linux-gnu-` cross-compilation toolchain or the [docker environment](https://github.com/Penglai-Enclave/Penglai-Enclave-sPMP?tab=readme-ov-file#build-penglai-sdk) we provide, you do not need to execute the above script.
+
 [Penglai (PMP)](https://github.com/Penglai-Enclave/Penglai-Enclave-sPMP) provides the instructions and scripts to build and run SDK demos.
 
 

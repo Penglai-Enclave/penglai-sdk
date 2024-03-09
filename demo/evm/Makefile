@@ -5,10 +5,10 @@ CXXFLAGS := $(CFLAGS)  $(EXTRA_CXXFLAGS)
 CXXFLAGS += -DTFLITE_WITHOUT_XNNPACK
 # LDFLAGS := --allow-multiple-definition
 # For now, compile the evm using the legacy compilation chain
-TOOLCHAINPATH := /home/penglai/toolchain-720/bin
-CXX := $(TOOLCHAINPATH)/riscv64-unknown-linux-gnu-g++
-CC := $(TOOLCHAINPATH)/riscv64-unknown-linux-gnu-gcc
-LINK = $(TOOLCHAINPATH)/riscv64-unknown-linux-gnu-ld
+TOOLCHAINPATH := /home/penglai/toolchain-720/bin/
+CXX := $(TOOLCHAINPATH)riscv64-unknown-linux-gnu-g++
+CC := $(TOOLCHAINPATH)riscv64-unknown-linux-gnu-gcc
+LINK = $(TOOLCHAINPATH)riscv64-unknown-linux-gnu-ld
 
 LIBS := \
 -lstdc++ \
