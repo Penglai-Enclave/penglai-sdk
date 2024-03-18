@@ -1,5 +1,5 @@
 all:
-	make -C musl
+	make -C runtime
 	make -C lib
 
 install:
@@ -8,12 +8,12 @@ install:
 	find lib -name "*.a" -exec cp --parent {} /opt/penglai/ \;
 	find lib -name "*.h" -exec cp --parent {} /opt/penglai/ \;
 	cp -r penglai_sdk_ssl /opt/penglai/
-	cp -r musl/lib /opt/penglai/runtime
+	cp -r runtime/lib /opt/penglai/runtime
 	cp app.* /opt/penglai
 
 
 clean:
-	make -C musl clean
+	make -C runtime clean
 	make -C lib clean
 	make -C demo clean
 	rm -f /opt/penglai/runtime/lib/*
