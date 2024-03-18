@@ -2,6 +2,7 @@ APP = prime
 APP_C_SRCS = prime.c
 EXTRA_CLEAN = $(APP).dump
 # include $(PENGLAI_LIB)/app.mk
+PENGLAI_LIB ?= /opt/penglai
 
 # below code is app.mk add with "CFLAGS += -I .. "
 CC = riscv64-unknown-linux-gnu-gcc

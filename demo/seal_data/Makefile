@@ -12,7 +12,7 @@ ifeq ($(shell command -v riscv64-unknown-linux-gnu-gcc 2> /dev/null),)
 	LINK = ld
 	AS = as
 endif
-
+PENGLAI_LIB ?= /opt/penglai
 SDK_LIB_DIR = $(PENGLAI_LIB)/lib
 RUNTIME_LIB_DIR = $(PENGLAI_LIB)/runtime/lib
 MUSL_LIBC = $(RUNTIME_LIB_DIR)/libc.a

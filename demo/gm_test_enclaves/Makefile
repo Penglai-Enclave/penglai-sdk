@@ -21,7 +21,8 @@
 
 APP = test_sm2 test_random test_sm4_cbc test_sm4_ocb
 APP_C_SRCS = test_sm2.c test_random.c test_sm4_cbc.c test_sm4_ocb.c
-PENGLAI_LIB = /opt/penglai
+PENGLAI_LIB ?= /opt/penglai
+
 
 CC = riscv64-unknown-linux-gnu-gcc
 CFLAGS = -Wall 

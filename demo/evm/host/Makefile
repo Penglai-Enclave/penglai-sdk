@@ -1,3 +1,4 @@
+PENGLAI_LIB ?= /opt/penglai
 CC=riscv64-unknown-linux-gnu-gcc
 CXX := riscv64-unknown-linux-gnu-g++
 
