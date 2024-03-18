@@ -23,6 +23,11 @@ CPPFLAGS =
 LDFLAGS = 
 LDFLAGS_AUTO = -Wl,--sort-section,alignment -Wl,--sort-common -Wl,--gc-sections -Wl,--hash-style=both -Wl,--no-undefined -Wl,--exclude-libs=ALL -Wl,--dynamic-list=./dynamic.list
 CROSS_COMPILE = riscv64-unknown-linux-gnu-
+# 检测是否存在riscv64-unknown-linux-gnu-gcc工具链，如果不存在则使用gcc
+ifeq ($(shell command -v riscv64-unknown-linux-gnu-gcc 2> /dev/null),)
+    CC = gcc
+	CROSS_COMPILE = 
+endif
 LIBCC = -lgcc -lgcc_eh
 OPTIMIZE_GLOBS = internal/*.c malloc/*.c string/*.c
 ALL_TOOLS =  obj/musl-gcc

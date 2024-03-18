@@ -6,6 +6,13 @@ CFLAGS = -Wall
 LINK = riscv64-unknown-linux-gnu-ld
 AS = riscv64-unknown-linux-gnu-as
 
+# 检测是否存在riscv64-unknown-linux-gnu-gcc工具链，如果不存在则使用gcc
+ifeq ($(shell command -v riscv64-unknown-linux-gnu-gcc 2> /dev/null),)
+    CC = gcc
+	LINK = ld
+	AS = as
+endif
+
 SDK_LIB_DIR = $(PENGLAI_LIB)/lib
 RUNTIME_LIB_DIR = $(PENGLAI_LIB)/runtime/lib
 MUSL_LIBC = $(RUNTIME_LIB_DIR)/libc.a
