@@ -1,7 +1,7 @@
 APP = prime
 APP_C_SRCS = prime.c
 EXTRA_CLEAN = $(APP).dump
-# include $(PENGLAI_SDK)/app.mk
+# include $(PENGLAI_LIB)/app.mk
 
 # below code is app.mk add with "CFLAGS += -I .. "
 CC = riscv64-unknown-linux-gnu-gcc
@@ -10,27 +10,27 @@ CFLAGS += -I ..
 LINK = riscv64-unknown-linux-gnu-ld
 AS = riscv64-unknown-linux-gnu-as
 
-SDK_LIB_DIR = $(PENGLAI_SDK)/lib
-MUSL_LIB_DIR = $(PENGLAI_SDK)/musl/lib
-MUSL_LIBC = $(MUSL_LIB_DIR)/libc.a
+SDK_LIB_DIR = $(PENGLAI_LIB)/lib
+RUNTIME_LIB_DIR = $(PENGLAI_LIB)/runtime/lib
+MUSL_LIBC = $(RUNTIME_LIB_DIR)/libc.a
 SDK_APP_LIB = $(SDK_LIB_DIR)/libpenglai-enclave-eapp.a
 GCC_LIB = $(SDK_LIB_DIR)/libgcc.a
 SDK_INCLUDE_DIR = $(SDK_LIB_DIR)/app/include
 
-LDFLAGS = -static -L$(SDK_LIB_DIR) -L$(MUSL_LIB_DIR) -lpenglai-enclave-eapp -lc
+LDFLAGS = -static -L$(SDK_LIB_DIR) -L$(RUNTIME_LIB_DIR) -lpenglai-enclave-eapp -lc
 #LDFLAGS = -static -L$(SDK_LIB_DIR) -lpenglai-enclave-eapp
 CFLAGS += -I$(SDK_INCLUDE_DIR)
 
 APP_C_OBJS = $(patsubst %.c,%.o, $(APP_C_SRCS))
 APP_A_OBJS = $(patsubst %.s,%.o, $(APP_A_SRCS))
-APP_LDS ?= $(PENGLAI_SDK)/app.lds
+APP_LDS ?= $(PENGLAI_LIB)/app.lds
 
 APP_BIN = $(patsubst %,%,$(APP))
 
 all: $(APP_BIN)
 
 $(APP_C_OBJS): %.o: %.c
-	echo $(PENGLAI_SDK)
+	echo $(PENGLAI_LIB)
 	$(CC) $(CFLAGS) -c $<
 
 $(APP_BIN): % : $(APP_C_OBJS) $(APP_A_OBJS) $(SDK_APP_LIB) $(MUSL_LIBC) $(GCC_LIB)

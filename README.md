@@ -40,7 +40,7 @@ After you have written the logic of your enclave, you also need to write a corre
 
 Finally, you need to modify the `demo/Makefile` to add the name of the newly created directory to the corresponding location. For example, you need to add `make -C hello_world` under the `all` target and `make -C hello_world clean` under the `clean` target.
 
-Now, you can re-execute `PENGLAI_SDK=$(pwd) make -j8` command. If everything is successful, you will see the corresponding executable file appear in your demo directory. Then you just need to refer to [Penglai (PMP)](https://github.com/Penglai-Enclave/Penglai-Enclave-sPMP) to copy the executable file to the VM using *scp*, and run your own demo, e.g., a hello_world enclave, using `./host hello_world`.
+Now, you can re-execute `PENGLAI_LIB=$(pwd) make -j8` command. If everything is successful, you will see the corresponding executable file appear in your demo directory. Then you just need to refer to [Penglai (PMP)](https://github.com/Penglai-Enclave/Penglai-Enclave-sPMP) to copy the executable file to the VM using *scp*, and run your own demo, e.g., a hello_world enclave, using `./host hello_world`.
 
 Congratulations! You have successfully built and run a demo written by yourself on Penglai.
 
