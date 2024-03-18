@@ -15,8 +15,8 @@ This demo implements a relatively complete Ethereum Virtual Machine(EVM) in the 
 
 
 ## Quick Start
-
-- Compile Penglai sdk demo: `PENGLAI_SDK=$(pwd) make -j8`.
+- Build sdk with `make` and `make install`, You will install the dependencies used by penglai under dir `/opt/penglai`.
+- Compile Penglai sdk demo: `PENGLAI_LIB=$(pwd) make -j8`.
 - After successful compilation, corresponding executable files `evm` and `evm_host` will be generated in the `sdk/demo/evm` and `sdk/demo/evm/host` directories respectively.
 - Copy the two generated executable files to openEuler Qemu.
 - Execute `./evm_host evm` after executing `insmod penglai.ko`.
