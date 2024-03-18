@@ -9,15 +9,15 @@ ifeq ($(shell command -v riscv64-unknown-linux-gnu-gcc 2> /dev/null),)
 	LINK = ld
 	AS = as
 endif
-PENGLAI_LIB ?= /opt/penglai/
+PENGLAI_LIB ?= /opt/penglai
 SDK_LIB_DIR = $(PENGLAI_LIB)/lib
-MUSL_LIB_DIR = $(PENGLAI_LIB)/runtime/lib
-MUSL_LIBC = $(MUSL_LIB_DIR)/libc.a
+RUNTIME_LIB_DIR = $(PENGLAI_LIB)/runtime/lib
+MUSL_LIBC = $(RUNTIME_LIB_DIR)/libc.a
 SDK_APP_LIB = $(SDK_LIB_DIR)/libpenglai-enclave-eapp.a
 GCC_LIB = $(SDK_LIB_DIR)/libgcc.a
 SDK_INCLUDE_DIR = $(SDK_LIB_DIR)/app/include
 
-LDFLAGS = -static -L$(SDK_LIB_DIR) -L$(MUSL_LIB_DIR) -lpenglai-enclave-eapp -lc
+LDFLAGS = -static -L$(SDK_LIB_DIR) -L$(RUNTIME_LIB_DIR) -lpenglai-enclave-eapp -lc
 #LDFLAGS = -static -L$(SDK_LIB_DIR) -lpenglai-enclave-eapp
 CFLAGS += -I$(SDK_INCLUDE_DIR)
 

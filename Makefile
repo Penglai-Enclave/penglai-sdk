@@ -17,5 +17,5 @@ clean:
 	make -C runtime clean
 	make -C lib clean
 	make -C demo clean
-	rm -f $(DESTDIR)/runtime/lib/*
-	rm -f $(DESTDIR)/lib/*
+	rm -rf $(DESTDIR)/runtime/lib/*
+	rm -rf $(DESTDIR)/lib/*
