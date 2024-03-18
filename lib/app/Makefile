@@ -7,6 +7,14 @@ GM_INCLUDE_DIR = ../gm/include
 AR = riscv64-unknown-elf-ar
 ARFLAGS = rcs
 
+# 检测是否存在riscv64-unknown-linux-gnu-gcc工具链，如果不存在则使用gcc
+ifeq ($(shell command -v riscv64-unknown-linux-gnu-gcc 2> /dev/null),)
+    CC = gcc
+	LINK = ld
+	AS = as
+	AR = ar
+endif
+
 ASM_SRCS = src/eret.S
 C_SRCS = src/print.c src/seal.c
 

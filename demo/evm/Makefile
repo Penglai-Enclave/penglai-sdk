@@ -11,6 +11,14 @@ CXX := $(TOOLCHAINPATH)riscv64-unknown-linux-gnu-g++
 CC := $(TOOLCHAINPATH)riscv64-unknown-linux-gnu-gcc
 LINK = $(TOOLCHAINPATH)riscv64-unknown-linux-gnu-ld
 
+# 检测是否存在riscv64-unknown-linux-gnu-gcc工具链，如果不存在则使用gcc
+ifeq ($(shell command -v riscv64-unknown-linux-gnu-gcc 2> /dev/null),)
+    CC = gcc
+	CXX = g++
+	LINK = ld
+	AS = as
+endif
+
 LIBS := \
 -lstdc++ \
 -lgcc_eh \
