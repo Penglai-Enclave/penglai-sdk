@@ -8,8 +8,8 @@ all:
 	make -C count
 	make -C gm_test_enclaves
 	make -C seal_data
-	make -C evm
-	make -C evm/host
+	# make -C evm
+	# make -C evm/host
 
 clean:
 	make -C host clean
