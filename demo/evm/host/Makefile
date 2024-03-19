@@ -1,12 +1,8 @@
 PENGLAI_LIB ?= /opt/penglai
-CC=riscv64-unknown-linux-gnu-gcc
-CXX := riscv64-unknown-linux-gnu-g++
+CC=$(CROSS_COMPILE)gcc
+CXX := $(CROSS_COMPILE)g++
 
-# 检测是否存在riscv64-unknown-linux-gnu-gcc工具链，如果不存在则使用gcc
-ifeq ($(shell command -v riscv64-unknown-linux-gnu-gcc 2> /dev/null),)
-    CC = gcc
-	CXX = g++
-endif
+
 
 HOST=evm_host
 

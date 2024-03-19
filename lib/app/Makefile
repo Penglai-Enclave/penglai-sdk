@@ -1,19 +1,11 @@
-CC = riscv64-unknown-linux-gnu-gcc
+CC = $(CROSS_COMPILE)gcc
 CFLAGS = -Wall -shared -fPIC
-LINK = riscv64-unknown-linux-gnu-ld
+LINK = $(CROSS_COMPILE)ld
 LINKFLAGS = -static
 INCLUDE_DIR = include
 GM_INCLUDE_DIR = ../gm/include
-AR = riscv64-unknown-elf-ar
+AR = $(CROSS_COMPILE)ar
 ARFLAGS = rcs
-
-# 检测是否存在riscv64-unknown-linux-gnu-gcc工具链，如果不存在则使用gcc
-ifeq ($(shell command -v riscv64-unknown-linux-gnu-gcc 2> /dev/null),)
-    CC = gcc
-	LINK = ld
-	AS = as
-	AR = ar
-endif
 
 ASM_SRCS = src/eret.S
 C_SRCS = src/print.c src/seal.c
