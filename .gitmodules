@@ -2,3 +2,7 @@
 	path = secGear
 	url = https://github.com/Penglai-Enclave/Penglai-secGear.git
 	branch = oe-release
+[submodule "Penglai-demo"]
+	path = Penglai-demo
+	url = https://github.com/Penglai-Enclave/Penglai-demo.git
+	branch = master
