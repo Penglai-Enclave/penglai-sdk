@@ -41,10 +41,27 @@ struct mmap_metadata
   unsigned long size;
 };
 
+#define SYS_eret 99 //ret to host
+#define SBI_EXT_PENGLAI_ENCLAVE 0x100101
+/**
+ * When the eapp calls a syscall that is not yet supported, 
+ * it simply exits the enclave by __asm_exit_enclave
+*/
+#define __asm_exit_enclave() \
+    __asm__ __volatile__ ( \
+        "li a6, %0\n\t" \
+        "li a7, %1\n\t" \
+        "ecall\n\t" \
+        : /* No output */ \
+        : "i"(SYS_eret), "i"(SBI_EXT_PENGLAI_ENCLAVE)\
+        : "memory", "a6", "a7" \
+    );
+
 static inline long __syscall0(long n)
 {
 	register long a7 __asm__("a7") = n;
 	register long a0 __asm__("a0");
+  __asm_exit_enclave();
 	__asm_syscall("r"(a7))
 }
 
@@ -70,7 +87,10 @@ static inline long __syscall1(long n, long a)
         // __asm_syscall("r"(a7), "0"(a0))
         return retval;
       }
+    default:
+        __asm_exit_enclave();
   }
+  
   __asm_syscall("r"(a7), "0"(a0))
 }
 
@@ -92,6 +112,8 @@ static inline long __syscall2(long n, long a, long b)
 #endif
         return 0;
       }
+    default:
+        __asm_exit_enclave();
   }
   __asm_syscall("r"(a7), "0"(a0), "r"(a1))
 }
@@ -102,6 +124,7 @@ static inline long __syscall3(long n, long a, long b, long c)
 	register long a0 __asm__("a0") = a;
 	register long a1 __asm__("a1") = b;
 	register long a2 __asm__("a2") = c;
+  __asm_exit_enclave();
 	__asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2))
 }
 
@@ -119,6 +142,9 @@ static inline long __syscall4(long n, long a, long b, long c, long d)
 	    // __asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2), "r"(a3))
         return 0;
       }
+      break;
+    default:
+        __asm_exit_enclave();
   }
 	__asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2), "r"(a3))
 }
@@ -131,6 +157,8 @@ static inline long __syscall5(long n, long a, long b, long c, long d, long e)
 	register long a2 __asm__("a2") = c;
 	register long a3 __asm__("a3") = d;
 	register long a4 __asm__("a4") = e;
+
+  __asm_exit_enclave();
 	__asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2), "r"(a3), "r"(a4))
 }
 
@@ -205,6 +233,8 @@ static inline long __syscall6(long n, long a, long b, long c, long d, long e, lo
       }
       break;
 #endif
+    default:
+        __asm_exit_enclave();
   }
 	__asm_syscall("r"(a7), "0"(a0), "r"(a1), "r"(a2), "r"(a3), "r"(a4), "r"(a5))
 }
