@@ -151,3 +151,44 @@ openssl pkeyutl -sign -inkey eckey.pem -in hash-file -out sig-file
 openssl pkeyutl -verify -in hash-file -pubin -inkey pub_key.pem -sigfile sig-file
 ```
 
+### 5. 签名和report的关系
+
+签名将会写入enclave中名为`.note.penglaimeta`段中。写入的数据布局如下：
+
+```c
+typedef struct _enclave_css_t {        /* 160 bytes */
+    unsigned char enclave_hash[HASH_SIZE];          /* (32) */
+    // enclave_hash是enclave的度量值
+    unsigned char signature[SIGNATURE_SIZE];        /* (64) */
+    // signature是对enclave_hash的签名
+    unsigned char user_pub_key[PUBLIC_KEY_SIZE];    /* (64) */
+    // user_pub_key是签名者公钥，用于验证签名的合法性
+} enclave_css_t;
+```
+
+attest会为enclave生成一个report，其结构如下：
+
+```c
+struct sm_report_t
+{
+  unsigned char hash[HASH_SIZE]; // secure monitor的哈希
+  unsigned char signature[SIGNATURE_SIZE]; // hash的签名
+  unsigned char sm_pub_key[PUBLIC_KEY_SIZE]; // secure monitor的公钥，用于验证签名
+};
+
+struct enclave_report_t
+{
+  unsigned char hash[HASH_SIZE]; // enclave的度量值
+  unsigned char signature[SIGNATURE_SIZE]; // 用secure monitor私钥对hash的签名
+  uintptr_t nonce; // 随机数，需要参与hash计算
+};
+
+struct report_t
+{
+  struct sm_report_t sm;
+  struct enclave_report_t enclave;
+  unsigned char dev_pub_key[PUBLIC_KEY_SIZE]; // 设备的公钥，用于验证设备身份
+};
+```
+
+签名和report的关系：sign tool 和 secure monitor 计算的enclave的度量值应该相同，即需要满足`enclave_css_t.enclave_hash == enclave_report_t.hash`。

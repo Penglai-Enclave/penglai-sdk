@@ -52,6 +52,10 @@ You can refer to the following documentation to get started with secGear for Pen
 
 [secGear for RISC-V TEE](https://github.com/Penglai-Enclave/Penglai-secGear/blob/riscv-penglai-zx-dev/docs/riscv_tee.md#secgear-for-risc-v-tee)
 
+## Sign tool
+
+Please refer to [sign tool](https://github.com/Penglai-Enclave/penglai-sdk/blob/sign_tool/sign_tool/penglai_sign_tool.md) to learn more about the sign tool.
+
 ## Licenses
 
 Mulan Permissive Software License，Version 1 (Mulan PSL v1)
