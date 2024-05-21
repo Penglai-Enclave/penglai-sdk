@@ -33,7 +33,8 @@ MUSL_LIBC = $(MUSL_LIB_DIR)/libc.a
 SDK_APP_LIB = $(SDK_LIB_DIR)/libpenglai-enclave-eapp.a
 GCC_LIB = $(SDK_LIB_DIR)/libgcc.a
 SDK_INCLUDE_DIR = $(SDK_LIB_DIR)/app/include
-GM_LIBS = $(SDK_LIB_DIR)/gm/sm2.a $(SDK_LIB_DIR)/gm/miracl.a
+# GM_LIBS = $(SDK_LIB_DIR)/gm/sm2.a $(SDK_LIB_DIR)/gm/miracl.a
+GM_LIBS = $(SDK_LIB_DIR)/libpenglai-enclave-gm.a
 GM_LIB_DIR = $(SDK_LIB_DIR)/gm
 GM_LIB_INCLUDE_DIR = $(SDK_LIB_DIR)/gm/include
 

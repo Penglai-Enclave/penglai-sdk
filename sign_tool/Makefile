@@ -8,7 +8,8 @@
 CUR_SOURCE = ${wildcard *.c}
 OPENSSL_LIB=/usr/local/openssl/lib64/libcrypto.a -ldl -lpthread
 SDK_LIB_DIR = $(PENGLAI_SDK)/lib
-GM_LIBS = $(SDK_LIB_DIR)/gm/sm2.a $(SDK_LIB_DIR)/gm/miracl.a
+# GM_LIBS = $(SDK_LIB_DIR)/gm/sm2.a $(SDK_LIB_DIR)/gm/miracl.a
+GM_LIBS = $(SDK_LIB_DIR)/libpenglai-enclave-gm.a
 GM_LIB_INCLUDE_DIR = $(SDK_LIB_DIR)/gm/include
 HOST_LIB = $(SDK_LIB_DIR)/libpenglai-enclave-host.a
 HOST_LIB_INCLUDE_DIR = $(SDK_LIB_DIR)/host/include
