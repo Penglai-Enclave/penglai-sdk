@@ -29,7 +29,8 @@ GM_LIB_INCLUDE_DIR = $(SDK_LIB_DIR)/gm/include
 SDK_APP_LIB = $(SDK_LIB_DIR)/libpenglai-enclave-eapp.a
 MUSL_LIBC = $(MUSL_LIB_DIR)/libc.a
 GCC_LIB = $(SDK_LIB_DIR)/libgcc.a
-GM_LIBS = $(SDK_LIB_DIR)/gm/sm2.a $(SDK_LIB_DIR)/gm/miracl.a
+# GM_LIBS = $(SDK_LIB_DIR)/gm/sm2.a $(SDK_LIB_DIR)/gm/miracl.a
+GM_LIBS = $(SDK_LIB_DIR)/libpenglai-enclave-gm.a
 
 all:
 	$(CC) -I$(SDK_INCLUDE_DIR) -c src/evm_entry.c -g -o evm_entry.o
