@@ -2,33 +2,11 @@
 
 ### 1. 编译：
 
-sign tool 依赖sdk目录下的gm国密算法库（Penglai secure monitor使用该库实现签名验签），以及OpenSSL 3.0.0（用于通用密钥文件格式的支持，详见[4. 补充openssl 的说明](#section4)）。
-
-编译penglai sign tool 需要首先在docker 中编译sdk目录下的gm国密算法库（在SDK编译过程中即可编译gm库，参考 https://github.com/Shang-QY/Penglai-Enclave-sPMP#build-penglai-sdk ，这里不另作说明），接着在安装有OpenSSL 3.0.0的RICS-V Qemu中编译sign tool 工具。
-
-#### 1.1 在RISC-V Qemu中安装OpenSSL 3.0.0
-
-***选项一***：可以从OpenSSL官网下载3.0.0版本的源码压缩包 [下载地址:https://www.openssl.org/source/old/3.0/openssl-3.0.0.tar.gz]，并在Qemu中按照`INSTALL.md`说明进行编译安装。由于在Qemu中，编译所需时间较长。
-
-***选项二***：为了方便测试，我们也提供了基于RISC-V Qemu 和OpenEuler 发行版镜像（与[Case: Running openEuler with Penglai](https://github.com/Shang-QY/Penglai-Enclave-sPMP#case-running-openeuler-with-penglai) 环境相同）的预编译版本 [点击下载](https://ipads.se.sjtu.edu.cn:1313/f/2e621476fa544e68bf68/?dl=1)，可将该压缩包拷贝到Qemu中解压，并直接运行`make install`安装即可，如下是Qemu中安装时输出。
-
+在`sdk`目录下执行以下命令，编译出的`penglai_sign`位于`sign_tool`目录下，`penglai_sign`可以在本地运行。
+```shell
+chmod +x build_sign_tool.sh
+./build_sign_tool.sh
 ```
-[root@openEuler-RISCV-rare openssl_libs]# make install
-cp -r include/openssl /usr/local/include
-cp -r lib/* /usr/local/lib
-cp -r app/* /usr/local/bin
-[root@openEuler-RISCV-rare openssl_libs]#
-```
-
-#### 在Qemu中编译
-
-请将sdk拷贝到RISC-V Qemu中，然后进入RISC-V Qemu中的sign tool 目录进行编译。
-
-```
-cd sdk && SDK=$(pwd) && cd sign_tool/ && PENGLAI_SDK=$SDK make
-```
-
-获得的二进制为`penglai_sign`
 
 
 
