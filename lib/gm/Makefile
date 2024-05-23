@@ -1,5 +1,5 @@
-CC = riscv64-unknown-linux-gnu-gcc
-AR = riscv64-unknown-elf-ar
+CC ?= riscv64-unknown-linux-gnu-gcc
+AR ?= riscv64-unknown-elf-ar
 
 # LIBS = miracl.a  -lm
 
@@ -15,7 +15,7 @@ SM2_SRC = $(addprefix source/, $(SM2))
 SM2_OBJ = $(patsubst %.c,%.o, $(SM2_SRC))
 SM2_CFLAGS = -c -I include -I include/miracl
 
-TARGET = ../libpenglai-enclave-gm.a
+TARGET = ../libpenglai-enclave-gm.a miracl.a sm2.a
 
 all: $(TARGET)
 
@@ -24,6 +24,12 @@ $(MIRARL_OBJ): %.o: %.c
 $(SM2_OBJ): %.o: %.c
 	$(CC) $(SM2_CFLAGS) -o $@ $<
 $(TARGET): $(MIRARL_OBJ) $(SM2_OBJ)
+	$(AR) crv $@ $^
+
+miracl.a: $(MIRARL_OBJ)
+	$(AR) crv $@ $^
+
+sm2.a: $(SM2_OBJ)
 	$(AR) crv $@ $^
 
 clean:

@@ -1,10 +1,10 @@
-CC = riscv64-unknown-linux-gnu-gcc
+CC ?= riscv64-unknown-linux-gnu-gcc
 CFLAGS = -Wall -shared -fPIC
-LINK = riscv64-unknown-linux-gnu-ld
+LINK ?= riscv64-unknown-linux-gnu-ld
 LINKFLAGS = -static
 INCLUDE_DIR = include
 GM_INCLUDE_DIR = ../gm/include
-AR = riscv64-unknown-elf-ar
+AR ?= riscv64-unknown-elf-ar
 ARFLAGS = rcs
 
 ASM_SRCS = src/eret.S

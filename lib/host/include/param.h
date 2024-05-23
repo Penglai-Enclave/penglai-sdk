@@ -58,6 +58,17 @@ struct enclave_report_t
   uintptr_t nonce;
 };
 
+struct prikey_t
+{
+  unsigned char dA[PRIVATE_KEY_SIZE];
+};
+
+struct pubkey_t
+{
+  unsigned char xA[PUBLIC_KEY_SIZE/2];
+  unsigned char yA[PUBLIC_KEY_SIZE/2];
+};
+
 struct report_t
 {
   struct sm_report_t sm;
