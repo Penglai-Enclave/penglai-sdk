@@ -54,7 +54,7 @@ You can refer to the following documentation to get started with secGear for Pen
 
 ## Sign tool
 
-Please refer to [sign tool](https://github.com/Penglai-Enclave/penglai-sdk/blob/sign_tool/sign_tool/penglai_sign_tool.md) to learn more about the sign tool.
+Please refer to [sign tool](https://github.com/Penglai-Enclave/penglai-sdk/blob/master/sign_tool/penglai_sign_tool.md) to learn more about the sign tool.
 
 ## Licenses
 
