@@ -1,0 +1,14 @@
+name: Compile
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Compile
+        run: chmod +x ./build_sign_tool.sh && ./build_sign_tool
