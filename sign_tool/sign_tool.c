@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "SM3.h"
+#include "SM2_sv.h"
 #include "penglai-enclave.h"
 #include "param.h"
 #include "penglai-enclave-elfloader.h"
@@ -7,16 +9,7 @@
 #include "riscv64.h"
 #include "util.h"
 #include "parse_key_file.h"
-
-#define DEFAULT_CLOCK_DELAY 100000
-#define STACK_POINT 0x0000004000000000
-#define DEFAULT_UNTRUSTED_PTR   0x0000001000000000
-#define ENCLAVE_DEFAULT_KBUFFER_SIZE              0x1000UL
-#define ENCLAVE_DEFAULT_KBUFFER         0xffffffe000000000UL
-#define MD_SIZE 64
-#define MAX_ELF_SIZE 512*1024*1024
-#define MAX_STACK_SIZE 64*1024*1024
-#define MAX_UNTRUSTED_MEM_SIZE 256*1024
+#include "../../penglai-enclave-driver/penglai-config.h"
 
 typedef enum _file_path_t
 {
@@ -49,6 +42,17 @@ void init_enclave_user_param(struct penglai_enclave_user_param* user_param, stru
     user_param->resume_type = 0;
     free(params);
     return;
+}
+
+void update_enclave_hash(void* hash, uintptr_t nonce_arg)
+{
+    SM3_STATE hash_ctx;
+    uintptr_t nonce = nonce_arg;
+
+    SM3_init(&hash_ctx);
+    SM3_process(&hash_ctx, (unsigned char*)(hash), HASH_SIZE);
+    SM3_process(&hash_ctx, (unsigned char*)(&nonce), sizeof(uintptr_t));
+    SM3_done(&hash_ctx, (unsigned char*)hash);
 }
 
 int penglai_enclave_create(struct penglai_enclave_user_param* enclave_param, enclave_css_t* enclave_css, unsigned long* meta_offset_arg)
@@ -111,7 +115,10 @@ int penglai_enclave_create(struct penglai_enclave_user_param* enclave_param, enc
     unsigned char enclave_hash[HASH_SIZE];
     hash_enclave(elf_entry, enclave_mem, (void*)enclave_hash, 0, DEFAULT_UNTRUSTED_PTR, untrusted_mem_size, ENCLAVE_DEFAULT_KBUFFER, ENCLAVE_DEFAULT_KBUFFER_SIZE);
     printf("[load_enclave] hash with nonce: \n");
-    printHex(enclave_hash, HASH_SIZE);
+    unsigned char enclave_hash_with_nonce[HASH_SIZE];
+	memcpy(enclave_hash_with_nonce, enclave_hash, sizeof(enclave_hash));
+	update_enclave_hash(enclave_hash_with_nonce, NONCE);
+    printHex(enclave_hash_with_nonce, HASH_SIZE);
     
 	memcpy(enclave_css->enclave_hash, enclave_hash, HASH_SIZE);
 	*meta_offset_arg = meta_offset;
@@ -397,8 +404,10 @@ int main(int argc, char* argv[])
         }
 
         // generate out
-        copy_file(path[ELF], path[OUTPUT]);
-        update_metadata(path[OUTPUT], &enclave_css, meta_offset);
+		if (meta_offset != 0) {
+			copy_file(path[ELF], path[OUTPUT]);
+			update_metadata(path[OUTPUT], &enclave_css, meta_offset);
+		}
 
         //dump
         if(path[DUMPFILE] != NULL && dump_enclave_metadata(path[OUTPUT], path[DUMPFILE]) == false)

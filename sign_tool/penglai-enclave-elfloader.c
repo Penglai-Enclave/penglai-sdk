@@ -65,8 +65,10 @@ int get_meta_property(void* elf_ptr, unsigned long size, unsigned long *meta_off
 	}
 	if (found == false)
     {
-        printf("ERROR: The enclave image should have '.note.penglaimeta' section\n");
-        return -1;
+        //printf("ERROR: The enclave image should have '.note.penglaimeta' section\n");
+        //return -1;
+		*meta_offset = 0;
+		*meta_blocksize = 0;
     }
 	/* We require that enclaves should have .note.penglaimeta section to store the metadata information
      * We limit this section is used for metadata only and ISV should not extend this section.
@@ -96,8 +98,8 @@ int get_meta_property(void* elf_ptr, unsigned long size, unsigned long *meta_off
     const char * meta_name = "penglai_metadata";
     if (note->n_namesz != (strlen(meta_name)+1) || memcmp((void *)(elf_ptr + shdr->sh_offset + sizeof(Elf64_Nhdr)), meta_name, note->n_namesz))
     {
-        printf("ERROR: The note in the '.note.penglaimeta' section must be named as \"penglai_metadata\"\n");
-        return -1;
+        //printf("ERROR: The note in the '.note.penglaimeta' section must be named as \"penglai_metadata\"\n");
+        //return -1;
     }
 
     *meta_offset = (unsigned long)(shdr->sh_offset + sizeof(Elf64_Nhdr) + note->n_namesz);

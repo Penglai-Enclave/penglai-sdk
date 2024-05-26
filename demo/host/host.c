@@ -7,17 +7,17 @@
 
 void printHex(unsigned char *c, int n)
 {
-	int i;
-	for (i = 0; i < n; i++) {
-		printf("0x%02X, ", c[i]);
-		if ((i%4) == 3)
-		    printf(" ");
+        int i;
+        for (i = 0; i < n; i++) {
+                printf("0x%02X, ", c[i]);
+                if ((i%4) == 3)
+                    printf(" ");
 
-		if ((i%16) == 15)
-		    printf("\n");
-	}
-	if ((i%16) != 0)
-		printf("\n");
+                if ((i%16) == 15)
+                    printf("\n");
+        }
+        if ((i%16) != 0)
+                printf("\n");
 }
 
 struct args
@@ -51,7 +51,7 @@ void* create_enclave(void* args0)
     
     printf("host:%d: enclave attest\n", i);
     PLenclave_attest(enclave, NONCE);
-    printHex((unsigned char*)(enclave->attest_param.report.enclave.signature), 64);
+    printHex((unsigned char*)(enclave->attest_param.report.enclave.hash), 32);
 
     printf("host:%d: enclave run\n", i);
     PLenclave_run(enclave);

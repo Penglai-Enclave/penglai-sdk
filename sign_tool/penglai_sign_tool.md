@@ -2,10 +2,10 @@
 
 ### 1. 编译：
 
-在`sdk`目录下执行以下命令，编译出的`penglai_sign`位于`sign_tool`目录下，`penglai_sign`可以在本地运行。
+在项目根目录下执行以下命令，编译出的`penglai_sign`位于`sign_tool`目录下，`penglai_sign`可以在本地运行。
 ```shell
-chmod +x build_sign_tool.sh
-./build_sign_tool.sh
+chmod +x ./sdk/build_sign_tool.sh
+./sdk/build_sign_tool.sh
 ```
 
 
