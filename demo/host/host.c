@@ -40,7 +40,8 @@ void* create_enclave(void* args0)
 
   struct elf_args * enclaveFile = (struct elf_args *)in;
   params->untrusted_mem_size = DEFAULT_UNTRUSTED_SIZE;
-  params->untrusted_mem_ptr = 0;
+  params->untrusted_mem_ptr = DEFAULT_UNTRUSTED_PTR;
+  params->stack_size = DEFAULT_STACK_SIZE;
   if(PLenclave_create(enclave, enclaveFile, params) < 0 )
   {
     printf("host:%d: failed to create enclave\n");
@@ -50,8 +51,8 @@ void* create_enclave(void* args0)
   {
     
     printf("host:%d: enclave attest\n", i);
-    PLenclave_attest(enclave, NONCE);
-    printHex((unsigned char*)(enclave->attest_param.report.enclave.signature), 64);
+    PLenclave_attest(enclave, 0);
+    printHex((unsigned char*)(enclave->attest_param.report.enclave.hash), 32);
 
     printf("host:%d: enclave run\n", i);
     PLenclave_run(enclave);

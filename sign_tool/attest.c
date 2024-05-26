@@ -108,7 +108,7 @@ void hash_enclave(unsigned long entry_point, enclave_mem_t* enclave_mem, void* h
   SM3_init(&hash_ctx);
 
   SM3_process(&hash_ctx, (unsigned char*)(&entry_point), sizeof(unsigned long));
-//   print_sm3_state(&hash_ctx, "entry_p");
+  // print_sm3_state(&hash_ctx, "entry_p");
     // configuration parameters
   SM3_process(&hash_ctx, (unsigned char*)(&(untrusted_ptr)),
         sizeof(unsigned long));

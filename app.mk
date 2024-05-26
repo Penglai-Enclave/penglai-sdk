@@ -27,7 +27,7 @@ $(APP_C_OBJS): %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
 $(APP_BIN): % : $(APP_C_OBJS) $(APP_A_OBJS) $(SDK_APP_LIB) $(MUSL_LIBC) $(GCC_LIB)
-	$(LINK) $(LDFLAGS) -o $@ $^ -T $(APP_LDS)
+	$(LINK) $(LDFLAGS) -o $@ $^ $(SDK_LIB_DIR)/app/src/metadata_sec.o -T $(APP_LDS)
 	chmod -x $@
 
 clean:
