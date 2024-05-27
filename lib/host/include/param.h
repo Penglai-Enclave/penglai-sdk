@@ -1,5 +1,6 @@
 #ifndef _ENCLAVE_PARAM
 #define _ENCLAVE_PARAM
+#include "../../../../penglai-enclave-driver/penglai-config.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -31,11 +32,6 @@ extern "C" {
 #define PENGLAI_ENCLAVE_IOC_DEBUG_PRINT \
   _IOW(PENGLAI_ENCLAVE_IOC_MAGIC, 0x06, struct penglai_enclave_user_param)
 
-
-#define DEFAULT_STACK_SIZE      1024*1024 // 1 MB
-#define DEFAULT_UNTRUSTED_PTR   0x0000001000000000
-#define DEFAULT_UNTRUSTED_SIZE  8192 // 8 KB
-
 #define USER_PARAM_RESUME_FROM_CUSTOM_OCALL  1000
 
 #define PRIVATE_KEY_SIZE       32
@@ -56,6 +52,17 @@ struct enclave_report_t
   unsigned char hash[HASH_SIZE];
   unsigned char signature[SIGNATURE_SIZE];
   uintptr_t nonce;
+};
+
+struct prikey_t
+{
+  unsigned char dA[PRIVATE_KEY_SIZE];
+};
+
+struct pubkey_t
+{
+  unsigned char xA[PUBLIC_KEY_SIZE/2];
+  unsigned char yA[PUBLIC_KEY_SIZE/2];
 };
 
 struct report_t
